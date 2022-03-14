@@ -1,12 +1,13 @@
-*Knight of Valhalla - Projeto de CES22*
+*advancing-hero2 - Projeto de CES29*
 ============================================
+Continuação do projeto knight_of_valhalla
 
 **Grupo**
-1. *Henrique Fernandes*
-2. *Éric Bastos*
-3. *Vinícius de Pádua*
-4. *Due Jie Wan*
-5. *Enzo Vargas*
+1. *Éric Bastos*
+2. *Enzo Vargas*
+3. *Due Jie Wan*
+4. *Mateus Nobre*
+5. *Lucas Inamine*
 6. *Thomas Castro*
 -----------------------
 ![GifJogo](./advancing_hero/images/knight_of_valhalla_gif.gif)
@@ -55,17 +56,6 @@ exemplo é estritamente proibido.
 - Quando o personagem fica sem "vida" suficiente, o jogo acaba e fica-se com a tela de "Game Over":
 ![GameOver](./advancing_hero/images/GameOver.png)
 - Se desejar reiniciar um outro jogo, basta utilizar qualquer tecla que irá redicionar para a tecla inicial.
-
-## Curiosidades
-  - Vale a pena ressaltar os seguintes fatos interessantes: o personagem principal foi inspirado no personagem lendário *Ragnar Lodbrok*, que reinou a Dinamarca e a Suécia durante os séculos VIII e IX.
-  ![Ragnar](https://super.abril.com.br/wp-content/uploads/2016/07/1-ragnar.png)
-
-  - As armas utilizadas no jogo foram inspiradas nas armas utilizadas no período medieval
-  ![ArmasUtilizadas](https://4.bp.blogspot.com/-8BF7X3TxbKs/XBavBZlD15I/AAAAAAAAwoQ/fAXYQitSAh8Xuknyba8CH0Ufp9TcNmiIgCLcBGAs/s1600/arco%2Bflecha%2Brwf.jpg)
-  ![Bumerangue](https://3.bp.blogspot.com/-2z513MA_btQ/XBkkIDMu36I/AAAAAAAAwrw/IpmR305oi5Up7i2nsiiK5CyanppjcV8QQCLcBGAs/s640/rwf%2Barmas%2Bvikings.jpg)
-
-  - A inspiração para o nome "Valhalla" vem da mitologia nórdica, onde os guerreiros mortos em combate são escolhidos por Odin e levados pelas valquírias para um salão enorme com 540 quartos, situados em Asgard. Lá eles são recepcionados aos outros guerreiros que brindam a sua chegada. É motivo de orgulho para os guerreiros vikings serem selecionados para Valhalla.
-  ![Valhalla](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Walhalla_%281896%29_by_Max_Br%C3%BCckner.jpg/800px-Walhalla_%281896%29_by_Max_Br%C3%BCckner.jpg)
 
 ## Referências 
 - Efeitos Sonoros retirados de: 
