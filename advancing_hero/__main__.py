@@ -33,6 +33,12 @@ while run:
             if event.customType == 'title_screen':
                 current_gamemode = gamemodes.modes['title_screen']
                 game_admin = current_gamemode(screen, settings)
+            if event.customType == 'world_map':
+                current_gamemode = gamemodes.modes['world_map']
+                game_admin = current_gamemode(screen, settings)
+            if event.customType == 'character_select':
+                current_gamemode = gamemodes.modes['character_select']
+                game_admin = current_gamemode(screen, settings)
             if event.customType == 'end_game':
                 current_gamemode = gamemodes.modes['end_game']
                 game_admin = current_gamemode(screen, settings)

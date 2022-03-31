@@ -21,7 +21,17 @@ DIRT = 'sand'
 WATER = 'water'
 LAVA = 'lava'
 
-level_1 = 'advancing_hero/world/world.json'
+#level_1 = 'advancing_hero/world/world.json'
+levels = ['advancing_hero/world/level1.json',  # 1
+          'advancing_hero/world/level2.json',
+          'advancing_hero/world/level3.json',
+          'advancing_hero/world/level4.json',
+          'advancing_hero/world/world.json',  # 5
+          'advancing_hero/world/world.json',
+          'advancing_hero/world/world.json',  # 7
+          'advancing_hero/world/world.json',
+          'advancing_hero/world/world.json'   # 9
+          ]
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

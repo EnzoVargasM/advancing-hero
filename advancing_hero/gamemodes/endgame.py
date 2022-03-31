@@ -18,7 +18,7 @@ class EndGame(GameMode):
         self.settings = settings
         self.background_image = pygame.transform.scale(
             pygame.image.load(
-                os.path.abspath('advancing_hero/images/endscreen.png')),
+                os.path.abspath('advancing_hero/images/backgrounds/EndScreen.png')),
             self.settings.SIZE)
         self.game_over_font = pygame.font.Font(self.font_path, 100)
         self.press_key_font = pygame.font.Font(self.font_path, 30)
