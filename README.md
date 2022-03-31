@@ -10,7 +10,7 @@ Continuação do projeto knight_of_valhalla
 5. *Lucas Inamine*
 6. *Thomas Castro*
 -----------------------
-![GifJogo](./advancing_hero/images/knight_of_valhalla_gif.gif)
+![GifJogo](./advancing_hero/images/readme_images/knight_of_valhalla_gif.gif)
 
 Cuidado ao adicionar arquivos ao repositório.
 ---------------------------------------------
@@ -37,12 +37,12 @@ exemplo é estritamente proibido.
 ## Instruções para uma boa experiência
 
 - Com o jogo iniciado, o jogador se encontrará na tela de início, podendo tanto iniciar o jogo (**Play Game**), como sair (**Exit Game**):
-  ![TelaInicio](./advancing_hero/images/TelaInicio.png)
+  ![TelaInicio](./advancing_hero/images/readme_images/TelaInicio.png)
 
 > Os comandos para selecionar podem ser feitos utilizando as teclas **PgUp/W** e **PgDn/S** do teclado. Para clicar basta utilizar as teclas **Space/Enter**.
 
  - Dentro do jogo, os comandos necessários para ter uma experiência agradável, é necessário ter em mente os seguintes comandos:
-  ![Gameplay](./advancing_hero/images/Gameplay.png)
+  ![Gameplay](./advancing_hero/images/readme_images/Gameplay.png)
   > - Para *movimentar* o personagem, utilizamos as teclas:
   >    - **W**: Movimentar para cima
   >    - **A**: Movimentar para a esquerda
@@ -54,7 +54,7 @@ exemplo é estritamente proibido.
 
 > **Disclaimer:** Vale a pena notar que o nosso personagem, Ragnar, se movimenta em velocidades diferentes dependendo do ambiente em que pisa. Pode-se notar este fato observando que na água ele se move com maior dificuldade.
 - Quando o personagem fica sem "vida" suficiente, o jogo acaba e fica-se com a tela de "Game Over":
-![GameOver](./advancing_hero/images/GameOver.png)
+![GameOver](./advancing_hero/images/readme_images/GameOver.png)
 - Se desejar reiniciar um outro jogo, basta utilizar qualquer tecla que irá redicionar para a tecla inicial.
 
 ## Referências 
@@ -63,5 +63,5 @@ exemplo é estritamente proibido.
 
 - Sprites e Gráficos retirados de:
 -   https://kenney.nl/assets/roguelike-caves-dungeons ;
--   https://kenney.nl/assets/rpg-base e https://www.spriters-resource.com/ ; e
+-   https://kenney.nl/assets/rpg-base; e
 -   https://www.spriters-resource.com/ .
