@@ -14,7 +14,7 @@ import math
 weapons = {'boomerang': Boomerang, 'arrow': Arrow}
 
 
-class Player(Sprite):
+class Player2(Sprite):
     """
     Represents a sprite test
     """
@@ -143,21 +143,21 @@ class Player(Sprite):
         dy = 0
         moving_flag = False  # Handles multiple key presses
         key = pygame.key.get_pressed()
-        if key[pygame.K_w]:
+        if key[pygame.K_i]:
             self.walk_animation(7, 1)
             moving_flag = True
             dy -= 1
-        if key[pygame.K_a]:
+        if key[pygame.K_j]:
             if not moving_flag:
                 self.walk_animation(4, 2)
             moving_flag = True
             dx -= 1
-        if key[pygame.K_d]:
+        if key[pygame.K_l]:
             if not moving_flag:
                 self.walk_animation(4, 4, flip=True)
             dx += 1
             moving_flag = True
-        if key[pygame.K_s]:
+        if key[pygame.K_k]:
             if not moving_flag:
                 self.walk_animation(1, 3)
             dy += 1

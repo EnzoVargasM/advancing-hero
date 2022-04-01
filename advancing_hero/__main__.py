@@ -10,13 +10,11 @@ global current_gamemode
 global game_admin
 pygame.mixer.set_num_channels(10)
 
-screen = pygame.display.set_mode(
-    (settings.screen_width, settings.screen_height))
+screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
 
 pygame.display.set_caption(settings.TITLE)
 
-pygame.event.post(
-    pygame.event.Event(pygame.USEREVENT, customType='title_screen'))
+pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='title_screen'))
 
 run = True
 

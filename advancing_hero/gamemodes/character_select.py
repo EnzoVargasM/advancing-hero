@@ -3,6 +3,15 @@ import pygame
 import pygame.freetype
 import os
 
+'''Ideas for different heros:
+Mage who load FIRE BALL to GROW infinitely and infinite cooldown
+Tank who is big and slow and has big shield, attack near
+Fast Monk who do not attack but is rodiated by balls of power
+Spirited away warrior, his spirit is the one who attack and is faster but do not take damage. Ability to pull spirit
+Bomber who can trow bombs in any direction with mouse click 
+Healer who trows heal like an arrow and heal/damage a circle around ability 2
+'''
+
 
 class CharacterSelectScreen(GameMode):
     def __init__(self, screen, settings):
@@ -28,11 +37,11 @@ class CharacterSelectScreen(GameMode):
                 (50, 80)),
             pygame.transform.scale(
                 pygame.image.load(
-                    os.path.abspath('advancing_hero/images/sprites/boss/a.png')),
+                    os.path.abspath('advancing_hero/images/sprites/boss_enemies/boss/a.png')),
                 (150, 150)),
             pygame.transform.scale(
                 pygame.image.load(
-                    os.path.abspath('advancing_hero/images/sprites/sprite1/tile000.png')),
+                    os.path.abspath('advancing_hero/images/sprites/player2/frame2.png')),
                 (50, 80))
         ]
         self.tick = 0  # artificial timer

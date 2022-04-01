@@ -54,8 +54,9 @@ class EndGame(GameMode):
         self.screen.blit(press_key_text, press_rect)
         for event in events:
             if event.type == pygame.KEYDOWN:
+                pygame.mixer.music.stop()
                 pygame.display.update()
-                pygame.time.wait(500)
+                pygame.time.wait(200)
                 pygame.event.post(
                     pygame.event.Event(pygame.USEREVENT,
                                        customType='title_screen'))

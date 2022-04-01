@@ -208,7 +208,7 @@ while run:
             elif event.key == pygame.K_DOWN and level > 0:
                 level -= 1
             elif event.key == pygame.K_LEFT:
-                block_type = (block_type-1) % block_quantity
+                block_type = (block_type - 1) % block_quantity
             elif event.key == pygame.K_RIGHT:
                 block_type = (block_type + 1) % block_quantity
 

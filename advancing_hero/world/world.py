@@ -20,7 +20,7 @@ class World:
             self.json_data = json.load(world_file)
         self.stage_data = self.json_data["block_data"]
         self.sprite_data = self.json_data["sprite_data"]
-        print(self.sprite_data)
+        #print(self.sprite_data)
         self.stage_data.reverse()
 
         self.blocks = {
@@ -63,9 +63,9 @@ class World:
                 self.all_enemies.add(new_sprite)
                 self.sprite_data.remove(sprite_element)
 
-    def update(self, screen: any, player) -> None:
+    def update(self, screen: any, player1, player2=None) -> None:
         """
-        Draw the world accorfing to the player position
+        Draw the world according to the player position
 
             Args:
 
@@ -74,9 +74,14 @@ class World:
                 :param player:
         """
         self.scroll_amount = 0
-        self.scroll_world(screen, player)
+        if player2 is not None:
+            self.scroll_world(screen, player1, player2)
+        else:
+            self.scroll_world(screen, player1)
 
-        self.all_enemies.update(player, self)
+        self.all_enemies.update(player1, self)
+        #if player2 is not None:
+        #    self.all_enemies.update(player2, self)
         self.all_enemies.draw(self.screen)
 
         if self.settings.DEBUG:
@@ -91,16 +96,17 @@ class World:
 
         self.frame_counter += 1
 
-    def scroll_world(self, screen, player):
+    def scroll_world(self, screen, player1, player2=None):
         if self.frame_counter % 2 == 0:
             prev_scroll = self.true_scroll
-            if self.true_scroll <= (
-                    len(self.stage_data) -
-                    self.settings.SCREEN_ROWS) * self.settings.tile_size:
+            if self.true_scroll <= \
+                    (len(self.stage_data) - self.settings.SCREEN_ROWS) * self.settings.tile_size:
                 self.true_scroll += self.settings.WORLD_SPEED
             scroll = int(self.true_scroll)
             self.scroll_amount = scroll - prev_scroll
-            player.auto_scroll_down(self.scroll_amount)
+            player1.auto_scroll_down(self.scroll_amount)
+            if player2 is not None:
+                player2.auto_scroll_down(self.scroll_amount)
 
         for tile in self.tile_list:
             if self.frame_counter % 2 == 0:
@@ -112,7 +118,7 @@ class World:
         # Check if we should spawn new sprites
         for _, sprite_element in enumerate(reversed(self.sprite_data)):
             if sprite_element[2] <= self.settings.screen_height + self.true_scroll:
-                print(sprite_element)
+                #print(sprite_element)
                 new_sprite = self.sprites[sprite_element[0]](position=(
                     sprite_element[1], sprite_element[2] -
                     (self.settings.screen_height + self.true_scroll)),
