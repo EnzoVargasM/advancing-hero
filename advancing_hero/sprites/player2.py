@@ -3,30 +3,31 @@ from .sprite import Sprite
 from .hero_weapons.boomerang import Boomerang
 from .status_bars.healthbar import HealthBar
 from .status_bars.oxygenbar import OxygenBar
-from .hero_weapons.arrow import Arrow
+from .hero_weapons.heal_blast import HealBlast
 import pygame
 import math
 
-#DOWN = 1
-#SIDE = 4
-#UP = 7
+# DOWN = 1
+# SIDE = 4
+# UP = 7
 
-weapons = {'boomerang': Boomerang, 'arrow': Arrow}
+weapons = {'heal_blast': HealBlast}
 
 
 class Player2(Sprite):
     """
     Represents a sprite test
     """
+
     def __init__(
-        self,
-        position,
-        settings,
-        stage,
-        screen,
-        max_health: float = 100,
-        max_oxygen: float = 100,
-        path: str = 'advancing_hero/images/sprites/player/',
+            self,
+            position,
+            settings,
+            stage,
+            screen,
+            max_health: float = 100,
+            max_oxygen: float = 100,
+            path: str = 'advancing_hero/images/sprites/player/',
     ) -> None:
         super().__init__(
             path=os.path.abspath(path),
@@ -41,23 +42,27 @@ class Player2(Sprite):
         self.update_rect()
         self.walking_framerate = 0
         self.moving_direction = 3
-        self.current_weapon = 'boomerang'
+        self.current_weapon = 'heal_blast'
+        self.weapon_slot = pygame.transform.scale(pygame.image.load(
+            r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/weapon_slot'
+            r'/weapon_slot.png'), (60, 60))
+        self.weapon_or_ability_icon = pygame.transform.scale(pygame.image.load(
+            r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/heal_blast'
+            r'/heal_blast.png'), (50, 50))
         self.weapon = weapons[self.current_weapon]
         self.attack_cooldown = 0
         self.projectiles = pygame.sprite.Group()
-        self.max_oxygen = max_oxygen
-        self.current_oxygen = max_oxygen
-        self.have_oxygen = True
-        self.in_water = False
-        self.alive = True
         self.timer_fast_player = 0
         self.health_bar = HealthBar(screen=screen,
                                     parent_sprite=self,
-                                    offset=(0, -38))
+                                    offset=(0, -38),
+                                    position='Right-Top')
         self.oxygen_bar = OxygenBar(
             screen=screen,
             parent_sprite=self,
+            position='R'
         )
+        self.max_oxygen = max_oxygen
         self.current_oxygen = max_oxygen
         self.have_oxygen = True
         self.in_water = False
@@ -65,7 +70,7 @@ class Player2(Sprite):
         self.mask = pygame.mask.from_surface(self.image.convert_alpha())
         self.invicibility_frames = 0
 
-    def update(self):
+    def update(self, player1):
         super().update()
         self.check_oxygen()
         self.check_alive()
@@ -73,7 +78,17 @@ class Player2(Sprite):
         self.handle_movement()
         self.handle_breathing()
         self.handle_weapon()
-        self.projectiles.update(self.stage)
+        self.screen.blit(self.weapon_slot, (self.settings.screen_width - 60, 60))
+        self.screen.blit(self.weapon_or_ability_icon, (self.settings.screen_width - 51, 64))  # print weapon icon on screen
+        ''' 
+        for each_projectile in self.projectiles:
+        print(each_projectile)
+            if each_projectile == HealBlast:
+                each_projectile.update(self.stage, player1)
+            else:
+                each_projectile.update(self.stage)
+        '''
+        self.projectiles.update(self.stage, player1)
         self.projectiles.draw(self.screen)
         self.health_bar.update()
         self.oxygen_bar.update()
@@ -90,8 +105,8 @@ class Player2(Sprite):
         for tile in self.stage.tile_list:
             # Check only blocks which are on screen and are interactable
             if tile[1].bottom > 0 and tile[
-                    1].top < self.settings.screen_height and tile[
-                        2].is_interactable:
+                1].top < self.settings.screen_height and tile[
+                2].is_interactable:
 
                 # First run block interaction code. The collision is checked with
                 # the player's standing point
@@ -106,37 +121,16 @@ class Player2(Sprite):
 
     def handle_weapon(self):
         key = pygame.key.get_pressed()
-        if key[pygame.K_SPACE]:
-
-            if self.current_weapon == 'boomerang':
-                if not self.projectiles.has(
-                        self.weapon):  # Make sure only one boomerang exists
-
-                    if self.moving_direction == 1:
-                        direction = pygame.Vector2((0, -1))
-                    elif self.moving_direction == 2:
-                        direction = pygame.Vector2((-1, 0))
-                    elif self.moving_direction == 3:
-                        direction = pygame.Vector2((0, 1))
-                    else:
-                        direction = pygame.Vector2((1, 0))
-
-                    self.weapon = weapons[self.current_weapon](
-                        (self.rect.centerx, self.rect.centery), direction,
-                        self, self.settings)
-                    self.projectiles.add(self.weapon)
-
-            if self.current_weapon == 'arrow' and self.attack_cooldown == 0 and len(
-                    self.projectiles.sprites()) < 3:
-                self.attack_cooldown += 15
-                self.weapon = weapons[self.current_weapon](
-                    (self.rect.centerx - 4, self.rect.centery),
-                    self.moving_direction, self.settings)
+        if key[pygame.K_p]:
+            if self.current_weapon == 'heal_blast' and self.attack_cooldown == 0 and len(
+                    self.projectiles.sprites()) < 1:
+                self.attack_cooldown += 60
+                self.weapon = weapons[self.current_weapon]((self.rect.centerx - 4, self.rect.centery),
+                                                           self.moving_direction, self.settings)
                 self.projectiles.add(self.weapon)
-        if key[pygame.K_UP]:
-            self.current_weapon = 'boomerang'
-        if key[pygame.K_DOWN]:
-            self.current_weapon = 'arrow'
+
+        if key[pygame.K_o]:
+            self.current_weapon = 'heal_blast'
 
     def handle_movement(self):
         dx = 0
@@ -182,8 +176,8 @@ class Player2(Sprite):
         for tile in self.stage.tile_list:
             # Check only blocks which are on screen and are interactable
             if tile[1].bottom > 0 and tile[
-                    1].top < self.settings.screen_height and tile[
-                        2].is_interactable:
+                1].top < self.settings.screen_height and tile[
+                2].is_interactable:
 
                 # First run block interaction code. The collision is checked with
                 # the player's standing point
@@ -226,8 +220,8 @@ class Player2(Sprite):
             for tile in self.stage.tile_list:
                 # Check only blocks which are on screen and are interactable
                 if tile[1].bottom > 0 and tile[
-                        1].top < self.settings.screen_height and tile[
-                            2].is_interactable:
+                    1].top < self.settings.screen_height and tile[
+                    2].is_interactable:
                     # Check if it's solid:
                     if tile[2].is_solid:
                         # Player is scrolled before the blocks, so we check collision with block's rect

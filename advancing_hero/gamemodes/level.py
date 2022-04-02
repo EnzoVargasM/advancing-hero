@@ -23,14 +23,13 @@ class LevelGameMode(GameMode):
         #pygame.mixer.music.set_volume(0.5)
         #pygame.mixer.music.play(-1)
 
-
     def loop(self, events):
         self.stage.update(self.screen, self.player1, self.player2)
         self.player1.update()
         self.player1.draw()
-        self.player2.update()
+        self.player2.update(self.player1)
         self.player2.draw()
         self.helper_font.render_to(
             self.screen, (5, self.settings.screen_height - 20),
-            "W: UP   S: DOWN   A: LEFT   D: RIGHT   SPACE: HIT   UP: BOOMERANG    DOWN: ARROW",
+            "WASD:P1 MOVEMENT     C:ATTACK     V:CHANGE WEAPON         IJKL:P2 MOVEMENT        P:HEAL BLAST",
             self.settings.BLACK)

@@ -18,7 +18,7 @@ class WinGame(GameMode):
         self.settings = settings
         self.background_image = pygame.transform.scale(
             pygame.image.load(
-                os.path.abspath('advancing_hero/images/titlescreen.png')),
+                os.path.abspath('advancing_hero/images/backgrounds/TitleScreen.png')),
             self.settings.SIZE)
         self.congrats_font = pygame.font.Font(self.font_path, 80)
         self.press_key_font = pygame.font.Font(self.font_path, 30)

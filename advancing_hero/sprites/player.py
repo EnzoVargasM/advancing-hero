@@ -42,22 +42,26 @@ class Player(Sprite):
         self.walking_framerate = 0
         self.moving_direction = 3
         self.current_weapon = 'boomerang'
+        self.weapon_slot = pygame.transform.scale(pygame.image.load(
+            r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/weapon_slot'
+            r'/weapon_slot.png'), (60, 60))
+        self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
+            r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/boomerang'
+            r'/frame2.png'))
+        self.changing_weapon_cooldown = 0
         self.weapon = weapons[self.current_weapon]
         self.attack_cooldown = 0
         self.projectiles = pygame.sprite.Group()
-        self.max_oxygen = max_oxygen
-        self.current_oxygen = max_oxygen
-        self.have_oxygen = True
-        self.in_water = False
-        self.alive = True
         self.timer_fast_player = 0
         self.health_bar = HealthBar(screen=screen,
                                     parent_sprite=self,
-                                    offset=(0, -38))
+                                    offset=(0, -38),
+                                    position='Left-Top')
         self.oxygen_bar = OxygenBar(
             screen=screen,
             parent_sprite=self,
         )
+        self.max_oxygen = max_oxygen
         self.current_oxygen = max_oxygen
         self.have_oxygen = True
         self.in_water = False
@@ -73,6 +77,19 @@ class Player(Sprite):
         self.handle_movement()
         self.handle_breathing()
         self.handle_weapon()
+        self.screen.blit(self.weapon_slot, (0, 60))
+        if self.current_weapon == 'boomerang':
+            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
+                r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons'
+                r'/boomerang/frame2.png'))
+            self.screen.blit(self.weapon_or_ability_icon, (10, 75))  # print weapon icon on screen
+        if self.current_weapon == 'arrow':
+            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
+                r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/arrow'
+                r'/arrow.png'))
+            self.screen.blit(self.weapon_or_ability_icon, (25, 75))  # print weapon icon on screen
+        if self.changing_weapon_cooldown > 0:
+            self.changing_weapon_cooldown -= 1
         self.projectiles.update(self.stage)
         self.projectiles.draw(self.screen)
         self.health_bar.update()
@@ -106,11 +123,17 @@ class Player(Sprite):
 
     def handle_weapon(self):
         key = pygame.key.get_pressed()
-        if key[pygame.K_SPACE]:
-
+        if key[pygame.K_v] and self.changing_weapon_cooldown == 0:
             if self.current_weapon == 'boomerang':
-                if not self.projectiles.has(
-                        self.weapon):  # Make sure only one boomerang exists
+                self.current_weapon = 'arrow'
+                self.changing_weapon_cooldown += 15
+            elif self.current_weapon == 'arrow':
+                self.current_weapon = 'boomerang'
+                self.changing_weapon_cooldown += 15
+        if key[pygame.K_c]:
+            if self.current_weapon == 'boomerang' and len(
+                    self.projectiles.sprites()) <= 1:
+                if not self.projectiles.has(self.weapon):  # Make sure only one boomerang exists
 
                     if self.moving_direction == 1:
                         direction = pygame.Vector2((0, -1))
@@ -133,10 +156,6 @@ class Player(Sprite):
                     (self.rect.centerx - 4, self.rect.centery),
                     self.moving_direction, self.settings)
                 self.projectiles.add(self.weapon)
-        if key[pygame.K_UP]:
-            self.current_weapon = 'boomerang'
-        if key[pygame.K_DOWN]:
-            self.current_weapon = 'arrow'
 
     def handle_movement(self):
         dx = 0
