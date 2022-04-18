@@ -17,7 +17,6 @@ class PotionHeal(Sprite):
 
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.speed = 5
         self.position = position
         self.rect.x = position[0]
         self.rect.y = position[1]

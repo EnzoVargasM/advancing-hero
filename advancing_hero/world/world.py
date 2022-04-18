@@ -13,9 +13,10 @@ class World:
     our hero walks
     """
 
-    def __init__(self, settings, level_data, screen) -> None:
+    def __init__(self, settings, level_data, screen, scroll_mode='Down') -> None:
         self.tile_list = []
         self.settings = settings
+        self.scroll_mode = scroll_mode
         with open(level_data) as world_file:
             self.json_data = json.load(world_file)
         self.stage_data = self.json_data["block_data"]
@@ -37,7 +38,8 @@ class World:
             'monster_sprite': sprites.Monster,
             'potion_heal': sprites.PotionHeal,
             'ship_sprite': sprites.Ship,
-            'boss': sprites.Boss
+            'boss': sprites.Boss,
+            'win_stage': sprites.WinStage
         }
 
         self.true_scroll = 0.0
@@ -97,23 +99,42 @@ class World:
         self.frame_counter += 1
 
     def scroll_world(self, screen, player1, player2=None):
-        if self.frame_counter % 2 == 0:
-            prev_scroll = self.true_scroll
-            if self.true_scroll <= \
-                    (len(self.stage_data) - self.settings.SCREEN_ROWS) * self.settings.tile_size:
-                self.true_scroll += self.settings.WORLD_SPEED
-            scroll = int(self.true_scroll)
-            self.scroll_amount = scroll - prev_scroll
-            player1.auto_scroll_down(self.scroll_amount)
-            if player2 is not None:
-                player2.auto_scroll_down(self.scroll_amount)
-
-        for tile in self.tile_list:
+        if self.scroll_mode == 'Down':
             if self.frame_counter % 2 == 0:
-                tile[1].y += self.scroll_amount
-            screen.blit(tile[0], tile[1])
-            if self.settings.DEBUG:
-                pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+                prev_scroll = self.true_scroll
+                if self.true_scroll <= \
+                        (len(self.stage_data) - self.settings.SCREEN_ROWS) * self.settings.tile_size:
+                    self.true_scroll += self.settings.WORLD_SPEED
+                scroll = int(self.true_scroll)
+                self.scroll_amount = scroll - prev_scroll
+                player1.auto_scroll_down(self.scroll_amount)
+                if player2 is not None:
+                    player2.auto_scroll_down(self.scroll_amount)
+            for tile in self.tile_list:
+                if self.frame_counter % 2 == 0:
+                    tile[1].y += self.scroll_amount
+                screen.blit(tile[0], tile[1])
+                if self.settings.DEBUG:
+                    pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+        if self.scroll_mode == 'Left':
+            if self.frame_counter % 2 == 0:
+                prev_scroll = self.true_scroll
+                if self.true_scroll <= \
+                        (len(self.stage_data[0]) - self.settings.SCREEN_COLUMNS) * self.settings.tile_size:
+                    self.true_scroll += self.settings.WORLD_SPEED
+                scroll = int(self.true_scroll)
+                self.scroll_amount = scroll - prev_scroll
+                player1.auto_scroll_left(self.scroll_amount)
+                if player2 is not None:
+                    player2.auto_scroll_left(self.scroll_amount)
+            for tile in self.tile_list:
+                if self.frame_counter % 2 == 0:
+                    tile[1].x -= self.scroll_amount
+                screen.blit(tile[0], tile[1])
+                if self.settings.DEBUG:
+                    pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+
+
 
         # Check if we should spawn new sprites
         for _, sprite_element in enumerate(reversed(self.sprite_data)):
@@ -125,3 +146,9 @@ class World:
                     screen=screen)
                 self.all_enemies.add(new_sprite)
                 self.sprite_data.remove(sprite_element)
+
+    # Function specific for drawing the map while paused
+    def paused_drawing(self, screen):
+        for tile in self.tile_list:
+            screen.blit(tile[0], tile[1])
+        self.all_enemies.draw(self.screen)

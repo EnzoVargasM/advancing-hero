@@ -2,6 +2,7 @@ from .gamemode import GameMode
 import pygame
 import pygame.freetype
 import os
+import json
 
 
 class WorldMap(GameMode):
@@ -19,7 +20,6 @@ class WorldMap(GameMode):
             (25, 40))
         self.menu_font = pygame.freetype.Font(self.font_path, 25)
         self.commands_font = pygame.freetype.Font(self.font_path, 15)
-        self.icon_position = 0
         self.tick = 0  # artificial timer
         self.icon_frame = 12  # Keep control of frame changes
         self.stage_positions = [(40, 224),
@@ -35,6 +35,14 @@ class WorldMap(GameMode):
         self.stage_clear_color = (255, 255, 255)
         self.color_change = 0  # Tick for color change acording to timer
         self.music_path = os.path.abspath('advancing_hero/musics/sawsquarenoise-Stage3.ogg')
+        with open('advancing_hero/world/journey_save_files.json') as save_files:
+            self.json_data = json.load(save_files)
+        save_files.close()
+        aux = self.json_data
+        if aux["current_level"][0] > aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]]-1:
+            self.icon_position = aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]]-1
+        else:
+            self.icon_position = aux["current_level"][0]
 
     def play_music(self):
         pygame.mixer.init()
@@ -69,15 +77,17 @@ class WorldMap(GameMode):
                                   (self.settings.screen_width / 2 - 130,
                                    self.settings.screen_height / 2 - 256),
                                   "World", self.stage_closed_color, style=3)
+        aux = self.json_data
+        stages_cleared_number = aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]]
         for i in range(len(self.stage_positions)):
-            if i < 6:
+            if i < stages_cleared_number:
                 self.menu_font.render_to(self.screen,
                                          self.stage_positions[i],
-                                         str(i + 1), self.stage_clear_color, style=3)
+                                         str(i+1), self.stage_clear_color, style=3)
             else:
                 self.menu_font.render_to(self.screen,
                                          self.stage_positions[i],
-                                         str(i + 1), self.stage_closed_color, style=3)
+                                         str(i+1), self.stage_closed_color, style=3)
 
         self.commands_font.render_to(self.screen,
                                      (10, self.settings.screen_height - 30),
@@ -98,17 +108,24 @@ class WorldMap(GameMode):
                     if self.icon_position > 0:
                         self.icon_position = self.icon_position - 1
                 if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    if self.icon_position < len(self.stage_positions) - 1:
+                    if self.icon_position < stages_cleared_number - 1:
                         self.icon_position = self.icon_position + 1
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                     if 0 <= self.icon_position <= 8:
+                        with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
+                            aux = self.json_data
+                            aux["current_level"][0] = self.icon_position
+                            json.dump(aux, outfile)
+                        outfile.close()
                         pygame.event.post(
                             pygame.event.Event(pygame.USEREVENT,
                                                customType='init_level',
-                                               level=self.settings.levels[self.icon_position]))
+                                               level=self.settings.levels[self.icon_position],
+                                               scroll_mode=self.settings.levels_mode[self.icon_position]))
+
                 if event.key == pygame.K_ESCAPE:
-                        pygame.display.update()
-                        pygame.time.wait(250)
-                        pygame.event.post(
-                            pygame.event.Event(pygame.USEREVENT,
-                                               customType='title_screen'))
+                    pygame.display.update()
+                    pygame.time.wait(100)
+                    pygame.event.post(
+                        pygame.event.Event(pygame.USEREVENT,
+                                           customType='character_select'))

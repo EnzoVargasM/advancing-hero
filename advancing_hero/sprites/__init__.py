@@ -13,3 +13,4 @@ from .regular_enemies.ship import Ship
 from .boss_enemies.boss import Boss
 from .boss_enemies.boss_spear import BossSpear
 from .boss_enemies.boss_fire import BossFire
+from .collectable.win_stage import WinStage

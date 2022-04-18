@@ -27,9 +27,12 @@ while run:
         elif event.type == pygame.USEREVENT:
             if event.customType == 'init_level':
                 current_gamemode = gamemodes.modes['level_main']
-                game_admin = current_gamemode(screen, event.level, settings)
+                game_admin = current_gamemode(screen, event.level, settings, event.scroll_mode)
             if event.customType == 'title_screen':
                 current_gamemode = gamemodes.modes['title_screen']
+                game_admin = current_gamemode(screen, settings)
+            if event.customType == 'journey_select':
+                current_gamemode = gamemodes.modes['journey_select']
                 game_admin = current_gamemode(screen, settings)
             if event.customType == 'world_map':
                 current_gamemode = gamemodes.modes['world_map']

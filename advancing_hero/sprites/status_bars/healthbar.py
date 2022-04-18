@@ -26,6 +26,11 @@ class HealthBar(Sprite):
             self.initial_width = 300
             self.height = 30
         self.image = pygame.transform.scale(self.image, (self.initial_width, self.height))
+        if position == 'Monster':
+            self.image = pygame.transform.scale(
+                pygame.image.load(
+                    os.path.abspath('advancing_hero/images/sprites/status_bars/healthbar/healthbar_enemies.png')),
+                (self.initial_width, self.height))
         self.rect = self.image.get_rect()
         self.parent_sprite = parent_sprite
         self.offset = offset

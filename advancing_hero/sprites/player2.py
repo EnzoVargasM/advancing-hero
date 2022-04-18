@@ -27,7 +27,7 @@ class Player2(Sprite):
             screen,
             max_health: float = 100,
             max_oxygen: float = 100,
-            path: str = 'advancing_hero/images/sprites/player/',
+            path: str = 'advancing_hero/images/sprites/player2/',
     ) -> None:
         super().__init__(
             path=os.path.abspath(path),
@@ -229,6 +229,26 @@ class Player2(Sprite):
                         # in case he was next to screen's bottom.
                         if tile[1].colliderect(self.rect.x,
                                                self.rect.y - scroll,
+                                               self.rect.width,
+                                               self.rect.height):
+                            pygame.event.post(
+                                pygame.event.Event(pygame.USEREVENT,
+                                                   customType='end_game'))
+
+    def auto_scroll_left(self, scroll):
+        self.rect.x -= scroll
+        if self.rect.left < 0:
+            self.rect.left = 0
+            for tile in self.stage.tile_list:
+                # Check only blocks which are on screen and are interactable
+                if tile[1].left > 0 and tile[1].right < self.settings.screen_width and tile[2].is_interactable:
+                    # Check if it's solid:
+                    if tile[2].is_solid:
+                        # Player is scrolled before the blocks, so we check collision with block's rect
+                        # + scroll, or, equivalently, player - scroll, now that we have already fixed player's position
+                        # in case he was next to screen's bottom.
+                        if tile[1].colliderect(self.rect.x + scroll,
+                                               self.rect.y,
                                                self.rect.width,
                                                self.rect.height):
                             pygame.event.post(

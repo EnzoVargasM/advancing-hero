@@ -5,22 +5,12 @@ SIZE = screen_width, screen_height = 64 * 16, 64 * 9
 FPS = 60
 tile_size = 64
 
+current_file = 0
+current_level = 0
+
 ## Speeds
 WORLD_SPEED = 1
 DEFAULT_PLAYER_SPEED = 5
-ASPHALT_SPEED = 1 * DEFAULT_PLAYER_SPEED
-GRASS_SPEED = 1 * DEFAULT_PLAYER_SPEED
-DIRT_SPEED = 0.6 * DEFAULT_PLAYER_SPEED
-WATER_SPEED = 0.5 * DEFAULT_PLAYER_SPEED
-
-
-def change_default_player_speed(amplifier=1):  # Change all speeds, if empty, reset speeds
-    global DEFAULT_PLAYER_SPEED, ASPHALT_SPEED, GRASS_SPEED, DIRT_SPEED, WATER_SPEED
-    DEFAULT_PLAYER_SPEED = 5 * amplifier
-    ASPHALT_SPEED = 1 * DEFAULT_PLAYER_SPEED
-    GRASS_SPEED = 1 * DEFAULT_PLAYER_SPEED
-    DIRT_SPEED = 0.6 * DEFAULT_PLAYER_SPEED
-    WATER_SPEED = 0.5 * DEFAULT_PLAYER_SPEED
 
 
 ## Block names
@@ -36,12 +26,23 @@ levels = ['advancing_hero/world/level1.json',  # 1
           'advancing_hero/world/level2.json',
           'advancing_hero/world/level3.json',
           'advancing_hero/world/level4.json',
-          'advancing_hero/world/world.json',  # 5
-          'advancing_hero/world/world.json',
-          'advancing_hero/world/world.json',  # 7
-          'advancing_hero/world/world.json',
-          'advancing_hero/world/world.json'  # 9
+          'advancing_hero/world/level5.json',  # 5
+          'advancing_hero/world/level5.json',
+          'advancing_hero/world/level5.json',  # 7
+          'advancing_hero/world/level5.json',
+          'advancing_hero/world/level5.json'  # 9
           ]
+
+levels_mode = ['Down',  # 1
+               'Left',
+               'Down',
+               'Left',
+               'Down',  # 5
+               'Down',
+               'Down',  # 7
+               'Down',
+               'Down'   # 9
+               ]
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

@@ -21,4 +21,4 @@ class Asphalt(Block):
 
     def player_interaction(self, player):
         super().player_interaction(player)
-        player.speed = self.settings.ASPHALT_SPEED
+        player.speed = player.speed_base

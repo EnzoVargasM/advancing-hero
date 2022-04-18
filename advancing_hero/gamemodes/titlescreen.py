@@ -33,26 +33,12 @@ class TitleScreen(GameMode):
                                   (self.settings.screen_width / 2 - 270,
                                    self.settings.screen_height / 2 - 256),
                                   "Advancing Hero", self.settings.BLACK)
-        self.menu_font.render_to(self.screen,  # Temporary used for testing Map GameMode  'Start New Journey' button
-                                 (self.settings.screen_width / 2 - 160,
-                                  self.settings.screen_height / 2 - 100),
-                                 "Start New Journey", self.settings.BLACK)
-        self.menu_font.render_to(self.screen,  # Temporary used for testing Map GameMode  'Load Journey' button
-                                 (self.settings.screen_width / 2 - 160,
-                                  self.settings.screen_height / 2 - 50),
-                                 "Test Map GameMode", self.settings.BLACK)
-        self.menu_font.render_to(self.screen,
-                                 (self.settings.screen_width / 2 - 160,
-                                  self.settings.screen_height / 2),
-                                 "Hero Selection", self.settings.BLACK)
-        self.menu_font.render_to(self.screen,
-                                 (self.settings.screen_width / 2 - 160,
-                                  self.settings.screen_height / 2 + 50),
-                                 "Credits", self.settings.BLACK)
-        self.menu_font.render_to(self.screen,
-                                 (self.settings.screen_width / 2 - 160,
-                                  self.settings.screen_height / 2 + 100),
-                                 "Quit Game", self.settings.BLACK)
+        menu_options = ["Start Game", "Quit Game"]
+        for i in range(0, 2):
+            self.menu_font.render_to(self.screen,
+                                     (self.settings.screen_width / 2 - 160,
+                                      self.settings.screen_height / 2 - 100 + 50 * i),
+                                     menu_options[i], self.settings.BLACK)
         self.commands_font.render_to(self.screen,
                                  (10, self.settings.screen_height - 30),
                                  "SPACE or ENTER: ENTER   W or UP: UP   S or DOWN: DOWN",
@@ -64,25 +50,16 @@ class TitleScreen(GameMode):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
-                    self.icon_position = (self.icon_position - 1) % 5
+                    self.icon_position = (self.icon_position - 1) % 2
                 if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    self.icon_position = (self.icon_position + 1) % 5
+                    self.icon_position = (self.icon_position + 1) % 2
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                     if self.icon_position == 0:
+                        pygame.time.wait(150)
                         pygame.event.post(
                             pygame.event.Event(pygame.USEREVENT,
-                                               customType='init_level',
-                                               level=self.settings.levels[self.icon_position]))
+                                               customType='journey_select'))
                     elif self.icon_position == 1:
-                        pygame.event.post(
-                            pygame.event.Event(pygame.USEREVENT,
-                                               customType='world_map'))
-                    elif self.icon_position == 2:  # Character Selection
-                        pygame.event.post(
-                            pygame.event.Event(pygame.USEREVENT,
-                                               customType='character_select'))
-                    elif self.icon_position == 3:
                         pygame.event.post(pygame.event.Event(pygame.QUIT))
-                    else:
-                        pygame.event.post(pygame.event.Event(pygame.QUIT))
+
 

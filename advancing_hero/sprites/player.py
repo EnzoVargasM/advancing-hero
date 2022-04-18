@@ -33,7 +33,8 @@ class Player(Sprite):
             position=position,
             max_health=max_health,
         )
-        self.speed = settings.DEFAULT_PLAYER_SPEED
+        self.speed_base = settings.DEFAULT_PLAYER_SPEED
+        self.speed = self.speed_base
         self.screen = screen
         self.settings = settings
         self.stage = stage
@@ -98,10 +99,12 @@ class Player(Sprite):
             self.attack_cooldown -= 1
         if self.invicibility_frames > 0:
             self.invicibility_frames -= 1
+        # Testing speed up effect (TSUE)
         if self.timer_fast_player > 0:  # Potion heal speed up player test
             self.timer_fast_player -= 1
             if self.timer_fast_player == 0:
-                self.settings.change_default_player_speed(1)
+                self.speed_base = self.settings.DEFAULT_PLAYER_SPEED
+                self.speed = self.speed_base
 
     def handle_breathing(self):
         for tile in self.stage.tile_list:
@@ -260,6 +263,26 @@ class Player(Sprite):
                                 pygame.event.Event(pygame.USEREVENT,
                                                    customType='end_game'))
 
+    def auto_scroll_left(self, scroll):
+        self.rect.x -= scroll
+        if self.rect.left < 0:
+            self.rect.left = 0
+            for tile in self.stage.tile_list:
+                # Check only blocks which are on screen and are interactable
+                if tile[1].left > 0 and tile[1].right < self.settings.screen_width and tile[2].is_interactable:
+                    # Check if it's solid:
+                    if tile[2].is_solid:
+                        # Player is scrolled before the blocks, so we check collision with block's rect
+                        # + scroll, or, equivalently, player - scroll, now that we have already fixed player's position
+                        # in case he was next to screen's bottom.
+                        if tile[1].colliderect(self.rect.x + scroll,
+                                               self.rect.y,
+                                               self.rect.width,
+                                               self.rect.height):
+                            pygame.event.post(
+                                pygame.event.Event(pygame.USEREVENT,
+                                                   customType='end_game'))
+
     def draw(self):
         surface_to_blit = self.image
         if self.invicibility_frames > 0 and self.invicibility_frames % 2 == 0:
@@ -267,6 +290,20 @@ class Player(Sprite):
         self.screen.blit(surface_to_blit, self.rect)
         if self.settings.DEBUG:
             pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 2)
+        # Drawing health bar, oxygen bar and other images while paused
+        self.health_bar.update()
+        self.oxygen_bar.update()
+        self.screen.blit(self.weapon_slot, (0, 60))
+        if self.current_weapon == 'boomerang':
+            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
+                r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons'
+                r'/boomerang/frame2.png'))
+            self.screen.blit(self.weapon_or_ability_icon, (10, 75))  # print weapon icon on screen
+        if self.current_weapon == 'arrow':
+            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
+                r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/arrow'
+                r'/arrow.png'))
+            self.screen.blit(self.weapon_or_ability_icon, (25, 75))  # print weapon icon on screen
 
     def walk_animation(self, still_frame, direction, flip=False):
         if self.walking_framerate == 0:
@@ -299,8 +336,10 @@ class Player(Sprite):
 
     def heal(self, heal):
         self.current_health = min(self.current_health + heal, self.max_health)
+        # Testing speed up effect (TSUE)
         self.timer_fast_player = 600
-        self.settings.change_default_player_speed(5)
+        self.speed_base = self.speed_base * 5
+        self.speed = self.speed_base
         return True
 
     def check_oxygen(self):
@@ -310,7 +349,7 @@ class Player(Sprite):
     def check_alive(self):
         if self.current_health == 0:
             self.alive = False
-            pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='end_game'))
+            pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
 
     def push(self):
         pass

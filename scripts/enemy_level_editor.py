@@ -6,24 +6,28 @@ from os import path
 import json
 ##### ENEMIES - ÚNICA PARTE EDITÁVEL DO CÓDIGO ###########
 enemy_name = 'bat_sprite'
-enemy_list = ['bat_sprite', 'monster_sprite', 'ship_sprite', 'potion_heal', 'boss']
+enemy_list = ['bat_sprite', 'monster_sprite', 'ship_sprite', 'potion_heal', 'boss', 'win_stage']
 enemies_available = {
     'bat_sprite':
     pygame.image.load(
-        path.abspath('../advancing_hero/images/sprites/bat/frame1.png')),
+        path.abspath('../advancing_hero/images/sprites/regular_enemies/bat/frame1.png')),
     'monster_sprite':
     pygame.image.load(
-        path.abspath('../advancing_hero/images/sprites/monster/frame1.png')),
+        path.abspath('../advancing_hero/images/sprites/regular_enemies/monster/frame1.png')),
     'potion_heal':
     pygame.image.load(
         path.abspath(
             '../advancing_hero/images/sprites/potion_heal/red_potion.png')),
     'ship_sprite':
     pygame.image.load(
-        path.abspath('../advancing_hero/images/sprites/ship/frame1.png')),
+        path.abspath('../advancing_hero/images/sprites/regular_enemies/ship/frame1.png')),
     'boss':
         pygame.image.load(
-            path.abspath('../advancing_hero/images/sprites/boss/a.png'))
+            path.abspath('../advancing_hero/images/sprites/boss_enemies/boss/a.png')),
+    'win_stage':
+        pygame.image.load(
+            path.abspath(
+                '../advancing_hero/images/sprites/win_stage/win_stage1.png'))
 }
 ###########################################################
 
@@ -37,7 +41,7 @@ tile_size = 64
 screen_cols = 16
 screen_rows = 9
 cols = 16
-rows = 111
+rows = 9
 screen_width = tile_size * screen_cols
 screen_height = (tile_size * screen_rows)
 
@@ -45,25 +49,19 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Enemies Level Editor')
 
 #load images
-grass_img = pygame.image.load(
-    path.abspath('../advancing_hero/images/blocks/grass.png'))
+grass_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/grass.png'))
+dirt_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/dirt.png'))
+water_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/water.png'))
+brick_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/brick.png'))
+asphalt_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/asphalt.png'))
+lava_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/lava.png'))
 
-dirt_img = pygame.image.load(
-    path.abspath('../advancing_hero/images/blocks/dirt.png'))
-water_img = pygame.image.load(
-    path.abspath('../advancing_hero/images/blocks/water.png'))
-
-brick_img = pygame.image.load(
-    path.abspath('../advancing_hero/images/blocks/brick.png'))
-
-asphalt_img = pygame.image.load(
-    path.abspath('../advancing_hero/images/blocks/asphalt.png'))
-lava_img = pygame.image.load(
-    path.abspath('../advancing_hero/images/blocks/lava.png'))
+img_list = [grass_img, dirt_img, water_img, brick_img, asphalt_img, lava_img]
 
 #define game variables
 clicked = False
-level = 0
+up_ticks = 0
+right_ticks = 0
 enemy_number=0
 
 #define colours
@@ -115,58 +113,25 @@ def draw_grid():
 def draw_world():
     for row in range(screen_rows):
         for col in range(screen_cols):
-            if world_data[rows - 1 - row - level][col] > 0:
-                if world_data[rows - 1 - row - level][col] == 1:
-                    #dirt blocks
-                    img = pygame.transform.scale(grass_img,
-                                                 (tile_size, tile_size))
-                    screen.blit(img, (col * tile_size,
-                                      (screen_rows - 1 - row) * tile_size))
-                if world_data[rows - 1 - row - level][col] == 2:
-                    #grass blocks
-                    img = pygame.transform.scale(dirt_img,
-                                                 (tile_size, tile_size))
-                    screen.blit(img, (col * tile_size,
-                                      (screen_rows - 1 - row) * tile_size))
-                if world_data[rows - 1 - row - level][col] == 3:
-                    #enemy blocks
-                    img = pygame.transform.scale(water_img,
-                                                 (tile_size, tile_size))
-                    screen.blit(img, (col * tile_size,
-                                      (screen_rows - 1 - row) * tile_size))
-                if world_data[rows - 1 - row - level][col] == 4:
-                    #horizontally moving platform
-                    img = pygame.transform.scale(brick_img,
-                                                 (tile_size, tile_size))
-                    screen.blit(img, (col * tile_size,
-                                      (screen_rows - 1 - row) * tile_size))
-                if world_data[rows - 1 - row - level][col] == 5:
-                    #vertically moving platform
-                    img = pygame.transform.scale(asphalt_img,
-                                                 (tile_size, tile_size))
-                    screen.blit(img, (col * tile_size,
-                                      (screen_rows - 1 - row) * tile_size))
-                if world_data[rows - 1 - row - level][col] == 6:
-                    # lava platform
-                    img = pygame.transform.scale(lava_img,
-                                                 (tile_size, tile_size))
-                    screen.blit(img, (col * tile_size,
-                                      (screen_rows - 1 - row) * tile_size))
+            if world_data[rows - 1 - row - up_ticks][col] > 0:
+                for i in range(1, 7):
+                    if world_data[rows - 1 - row - up_ticks][col + right_ticks] == i:
+                        img = pygame.transform.scale(img_list[i-1], (tile_size, tile_size))
+                        screen.blit(img, (col * tile_size, (screen_rows - 1 - row) * tile_size))
 
 
 def draw_enemies():
     #print(len(enemies))
     for _, sprite_element in enumerate(reversed(enemies)):
-        d = screen_height - sprite_element[2] + level * 64
+        d = screen_height - sprite_element[2] + up_ticks * 64
 
         if 0 <= d <= screen_height:
             img = enemies_available[sprite_element[0]]
             aux = sprite_element[2]
             if sprite_element[2] > screen_height:
                 aux = (screen_height - sprite_element[2])
-            screen.blit(img, (sprite_element[1], aux + level * 64))
-            pygame.draw.circle(screen, BLUE,
-                               (sprite_element[1], aux + level * 64), 10)
+            screen.blit(img, (sprite_element[1], aux + up_ticks * 64))
+            pygame.draw.circle(screen, BLUE, (sprite_element[1], aux + up_ticks * 64), 10)
 
 
 class Button():
@@ -212,7 +177,7 @@ while run:
     draw_enemies()
 
     #text showing current level
-    draw_text(f'Level: {level}', font, white, tile_size, screen_height - 60)
+    draw_text(f'Up: {up_ticks}, Right: {right_ticks}', font, white, tile_size, screen_height - 60)
     draw_text('Press UP or DOWN to change level', font, white, tile_size,
               screen_height - 40)
 
@@ -231,33 +196,43 @@ while run:
             pos = pygame.mouse.get_pos()
             x = pos[0]
             y = pos[1]
-            new_y = y + level * 64
+            new_y = y + up_ticks * 64
+            new_x = x + right_ticks * 64
 
             if new_y > screen_height:
-                new_y = screen_height - y + level * 64
+                new_y = screen_height - y + up_ticks * 64
 
+
+            print(y)
+            print(new_y)
+            print(x)
+            print(new_x)
             a = []
             for index, enemy in enumerate(enemies):
-                if math.dist([x, new_y], [enemy[1], enemy[2]]) < 10:
+                if math.dist([new_x, new_y], [enemy[1], enemy[2]]) < 10:
                     continue
                 else:
                     a.append(enemy)
 
             if len(a) == len(enemies):
-                a.append([enemy_name, x, new_y])
+                a.append([enemy_name, new_x, new_y])
             enemies = a.copy()
         if event.type == pygame.MOUSEBUTTONUP:
             clicked = False
         #up and down key presses to change level number
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and level <= rows - 1 - screen_rows:
-                level += 1
-            elif event.key == pygame.K_DOWN and level > 0:
-                level -= 1
-            elif event.key == pygame.K_LEFT:
+            if event.key == pygame.K_UP and up_ticks <= rows - 1 - screen_rows:
+                up_ticks += 1
+            elif event.key == pygame.K_DOWN and up_ticks > 0:
+                up_ticks -= 1
+            elif event.key == pygame.K_RIGHT and right_ticks <= cols - 1 - screen_cols:
+                right_ticks += 1
+            elif event.key == pygame.K_LEFT and right_ticks > 0:
+                right_ticks -= 1
+            elif event.key == pygame.K_a:
                 enemy_number=(enemy_number-1) % len(enemy_list)
                 enemy_name=enemy_list[enemy_number]
-            elif event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_d:
                 enemy_number = (enemy_number + 1) % len(enemy_list)
                 enemy_name = enemy_list[enemy_number]
 

@@ -2,6 +2,7 @@ from .gamemode import GameMode
 import pygame
 import pygame.freetype
 import os
+import json
 
 '''Ideas for different heros:
 Mage who load FIRE BALL to GROW infinitely and infinite cooldown
@@ -37,15 +38,18 @@ class CharacterSelectScreen(GameMode):
                 (50, 80)),
             pygame.transform.scale(
                 pygame.image.load(
-                    os.path.abspath('advancing_hero/images/sprites/boss_enemies/boss/a.png')),
-                (150, 150)),
+                    os.path.abspath('advancing_hero/images/sprites/player2/frame2.png')),
+                (50, 80)),
             pygame.transform.scale(
                 pygame.image.load(
-                    os.path.abspath('advancing_hero/images/sprites/player2/frame2.png')),
+                    os.path.abspath('advancing_hero/images/sprites/player3/frame2.png')),
                 (50, 80))
         ]
         self.tick = 0  # artificial timer
         self.icon_frame = 12  # Keep control of frame changes
+        with open('advancing_hero/world/journey_save_files.json') as save_files:
+            self.json_data = json.load(save_files)
+        save_files.close()
 
     def play_music(self):
         pygame.mixer.init()
@@ -69,7 +73,7 @@ class CharacterSelectScreen(GameMode):
             self.screen.blit(
                 self.hero_list[i],
                 (self.settings.screen_width / 2 - 150,
-                 self.settings.screen_height / 2 - 200 + i * 80))
+                 self.settings.screen_height / 2 - 170 + i * 80))
             self.menu_font.render_to(self.screen,
                                      (self.settings.screen_width / 2 - 350,
                                       self.settings.screen_height / 2 - 150 + i * 80),
@@ -111,15 +115,19 @@ class CharacterSelectScreen(GameMode):
                     if self.icon_position < len(self.hero_list)-1:
                         self.icon_position = self.icon_position + 1
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
-                    if self.icon_position == 0:  # Class1
-                        pygame.display.update()
-                        pygame.time.wait(500)
+                    if self.icon_position == 0:
+                        # Update current hero in global database
+                        with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
+                            aux = self.json_data
+                            aux["current_hero"][0] = self.icon_position
+                            json.dump(aux, outfile)
+                        outfile.close()
+                        pygame.time.wait(150)
                         pygame.event.post(
                             pygame.event.Event(pygame.USEREVENT,
-                                               customType='title_screen'))
+                                               customType='world_map'))
                 if event.key == pygame.K_ESCAPE:
-                        pygame.display.update()
-                        pygame.time.wait(250)
-                        pygame.event.post(
-                            pygame.event.Event(pygame.USEREVENT,
-                                               customType='title_screen'))
+                    pygame.time.wait(150)
+                    pygame.event.post(
+                        pygame.event.Event(pygame.USEREVENT,
+                                           customType='journey_select'))
