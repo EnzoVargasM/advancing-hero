@@ -44,11 +44,9 @@ class Player(Sprite):
         self.moving_direction = 3
         self.current_weapon = 'boomerang'
         self.weapon_slot = pygame.transform.scale(pygame.image.load(
-            r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/weapon_slot'
-            r'/weapon_slot.png'), (60, 60))
+            os.path.abspath('advancing_hero/images/sprites/hero_weapons/weapon_slot/weapon_slot.png')), (60, 60))
         self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-            r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/boomerang'
-            r'/frame2.png'))
+            os.path.abspath('advancing_hero/images/sprites/hero_weapons/boomerang/frame2.png')))
         self.changing_weapon_cooldown = 0
         self.weapon = weapons[self.current_weapon]
         self.attack_cooldown = 0
@@ -81,13 +79,12 @@ class Player(Sprite):
         self.screen.blit(self.weapon_slot, (0, 60))
         if self.current_weapon == 'boomerang':
             self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-                r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons'
-                r'/boomerang/frame2.png'))
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/boomerang/frame2.png')
+                ))
             self.screen.blit(self.weapon_or_ability_icon, (10, 75))  # print weapon icon on screen
         if self.current_weapon == 'arrow':
             self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-                r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/arrow'
-                r'/arrow.png'))
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/arrow/arrow.png')))
             self.screen.blit(self.weapon_or_ability_icon, (25, 75))  # print weapon icon on screen
         if self.changing_weapon_cooldown > 0:
             self.changing_weapon_cooldown -= 1
@@ -296,13 +293,11 @@ class Player(Sprite):
         self.screen.blit(self.weapon_slot, (0, 60))
         if self.current_weapon == 'boomerang':
             self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-                r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons'
-                r'/boomerang/frame2.png'))
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/boomerang/frame2.png')))
             self.screen.blit(self.weapon_or_ability_icon, (10, 75))  # print weapon icon on screen
         if self.current_weapon == 'arrow':
             self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-                r'C:/Users/Enzo/PycharmProjects/advancing-hero/advancing_hero/images/sprites/hero_weapons/arrow'
-                r'/arrow.png'))
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/arrow/arrow.png')))
             self.screen.blit(self.weapon_or_ability_icon, (25, 75))  # print weapon icon on screen
 
     def walk_animation(self, still_frame, direction, flip=False):
