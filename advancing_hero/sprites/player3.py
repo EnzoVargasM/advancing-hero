@@ -34,8 +34,7 @@ class Player2(Sprite):
             position=position,
             max_health=max_health,
         )
-        self.speed_base = settings.DEFAULT_PLAYER_SPEED
-        self.speed = self.speed_base
+        self.speed = settings.DEFAULT_PLAYER_SPEED
         self.screen = screen
         self.settings = settings
         self.stage = stage
@@ -71,8 +70,6 @@ class Player2(Sprite):
         self.mask = pygame.mask.from_surface(self.image.convert_alpha())
         self.invicibility_frames = 0
 
-        self.time_charging = 0
-
     def update(self, player1):
         super().update()
         self.check_oxygen()
@@ -99,12 +96,10 @@ class Player2(Sprite):
             self.attack_cooldown -= 1
         if self.invicibility_frames > 0:
             self.invicibility_frames -= 1
-        # Testing speed up effect (TSUE)
         if self.timer_fast_player > 0:  # Potion heal speed up player test
             self.timer_fast_player -= 1
             if self.timer_fast_player == 0:
-                self.speed_base = self.settings.DEFAULT_PLAYER_SPEED
-                self.speed = self.speed_base
+                self.settings.change_default_player_speed(1)
 
     def handle_breathing(self):
         for tile in self.stage.tile_list:
@@ -129,13 +124,11 @@ class Player2(Sprite):
         if key[pygame.K_p]:
             if self.current_weapon == 'heal_blast' and self.attack_cooldown == 0 and len(
                     self.projectiles.sprites()) < 1:
-                self.time_charging += 1
-        if not key[pygame.K_p] and self.time_charging != 0:
-            self.attack_cooldown += 60 + self.time_charging
-            self.weapon = weapons[self.current_weapon]((self.rect.centerx - 4, self.rect.centery),
-                                                       self.moving_direction, self.settings, self.time_charging)
-            self.projectiles.add(self.weapon)
-            self.time_charging = 0
+                self.attack_cooldown += 60
+                self.weapon = weapons[self.current_weapon]((self.rect.centerx - 4, self.rect.centery),
+                                                           self.moving_direction, self.settings)
+                self.projectiles.add(self.weapon)
+
         if key[pygame.K_o]:
             self.current_weapon = 'heal_blast'
 
@@ -144,25 +137,24 @@ class Player2(Sprite):
         dy = 0
         moving_flag = False  # Handles multiple key presses
         key = pygame.key.get_pressed()
-        if not key[pygame.K_p]:
-            if key[pygame.K_i]:
-                self.walk_animation(7, 1)
-                moving_flag = True
-                dy -= 1
-            if key[pygame.K_j]:
-                if not moving_flag:
-                    self.walk_animation(4, 2)
-                moving_flag = True
-                dx -= 1
-            if key[pygame.K_l]:
-                if not moving_flag:
-                    self.walk_animation(4, 4, flip=True)
-                dx += 1
-                moving_flag = True
-            if key[pygame.K_k]:
-                if not moving_flag:
-                    self.walk_animation(1, 3)
-                dy += 1
+        if key[pygame.K_i]:
+            self.walk_animation(7, 1)
+            moving_flag = True
+            dy -= 1
+        if key[pygame.K_j]:
+            if not moving_flag:
+                self.walk_animation(4, 2)
+            moving_flag = True
+            dx -= 1
+        if key[pygame.K_l]:
+            if not moving_flag:
+                self.walk_animation(4, 4, flip=True)
+            dx += 1
+            moving_flag = True
+        if key[pygame.K_k]:
+            if not moving_flag:
+                self.walk_animation(1, 3)
+            dy += 1
 
         if dx == 0 and dy == 0:
             self.walking_framerate = 0
@@ -302,10 +294,8 @@ class Player2(Sprite):
 
     def heal(self, heal):
         self.current_health = min(self.current_health + heal, self.max_health)
-        # Testing speed up effect (TSUE)
         self.timer_fast_player = 600
-        self.speed_base = self.speed_base * 5
-        self.speed = self.speed_base
+        self.settings.change_default_player_speed(5)
         return True
 
     def check_oxygen(self):

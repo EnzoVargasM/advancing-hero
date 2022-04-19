@@ -13,7 +13,7 @@ class LevelGameMode(GameMode):
         self.settings = settings
         self.play_music()
         self.stage = World(settings, self.level_file, screen, scroll_mode)
-        self.player1 = Player((512, 288), settings, self.stage, self.screen)
+        self.player1 = Player2((512, 288), settings, self.stage, self.screen)
         self.player2 = Player2((612, 288), settings, self.stage, self.screen)
         self.helper_font = pygame.freetype.Font(self.font_path, 23)
         self.game_state = "Running"
@@ -34,7 +34,7 @@ class LevelGameMode(GameMode):
             self.stage.update(self.screen, self.player1)
             self.player1.draw()
             #self.player2.draw()
-            self.player1.update()
+            self.player1.update(self.player1)
             #self.player2.update(self.player1)
             # Changing State to Paused if ESC pressed
             for event in events:

@@ -3,9 +3,9 @@ from ..sprite import Sprite
 import pygame
 
 
-class HealBlast(Sprite):
+class FireBlast(Sprite):
     """
-    Represents a Heal_Blast
+    Represents a Fire_Blast
     """
 
     def __init__(
@@ -13,17 +13,12 @@ class HealBlast(Sprite):
             position,
             initial_direction,
             settings,
-            charging_quantity,
             path: str = 'advancing_hero/images/sprites/hero_weapons/heal_blast/',
     ) -> None:
         super().__init__(path=os.path.abspath(path), position=position)
         self.settings = settings
-
-        self.charging_quantity = charging_quantity
-
         temp_rect = self.rect
-        blast_lenght = self.charging_quantity * 4
-        self.image = pygame.transform.scale(self.image_list[self.image_frame], (blast_lenght, blast_lenght))
+        self.image = pygame.transform.scale(self.image_list[self.image_frame], (70,70))
         self.animation_framerate = 10
         speed = 10
         if initial_direction == 1:
@@ -38,11 +33,9 @@ class HealBlast(Sprite):
             self.speed = pygame.Vector2((speed, 0))
             self.image = pygame.transform.rotate(self.image, 270)
         self.rect = self.image.get_rect()
-        self.rect.x = temp_rect.x - blast_lenght/3
-        self.rect.y = temp_rect.y - blast_lenght/3
-        self.damage = 2
-        print(self.rect)
-
+        self.rect.x = temp_rect.x
+        self.rect.y = temp_rect.y
+        self.damage = 25
 
     def update(self, stage, player1):
         super().update()
@@ -50,6 +43,7 @@ class HealBlast(Sprite):
         self.rect.y += self.speed.y
 
         self.hurt_enemies(stage, player1)
+
         if not self.rect.colliderect(pygame.Rect(0, 0, self.settings.screen_width,
                                                  self.settings.screen_height)):
             self.kill()
@@ -59,13 +53,7 @@ class HealBlast(Sprite):
         #    if tile[1].bottom > 0 and tile[1].top < self.settings.screen_height and tile[2].is_solid:
         #        if tile[1].colliderect(self.rect):
         #            self.kill()
-        #if self.rect.colliderect(player1.rect):
-        #    player1.heal(10)
-        #    #self.play_music()
-        #    self.kill()
-        for enemy in stage.all_enemies.sprites():
-            if self.rect.colliderect(enemy.rect):
-                hit = enemy.hurt(self.damage)  # Interactable enemies must return true
-                # That is done so the projectiles don't interact with the player's attacks
-                if hit:
-                    pass #self.kill()
+        if self.rect.colliderect(player1.rect):
+            player1.heal(10)
+            #self.play_music()
+            self.kill()
