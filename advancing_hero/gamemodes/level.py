@@ -1,6 +1,6 @@
 from .gamemode import GameMode
 from advancing_hero.world import World
-from advancing_hero.sprites import Player, Player2
+from advancing_hero.sprites import Player, PlayerMonk
 import pygame
 import os
 
@@ -13,8 +13,8 @@ class LevelGameMode(GameMode):
         self.settings = settings
         self.play_music()
         self.stage = World(settings, self.level_file, screen, scroll_mode)
-        self.player1 = Player2((512, 288), settings, self.stage, self.screen)
-        self.player2 = Player2((612, 288), settings, self.stage, self.screen)
+        self.player1 = PlayerMonk((512, 288), settings, self.stage, self.screen)
+        #self.player2 = Player2((612, 288), settings, self.stage, self.screen)
         self.helper_font = pygame.freetype.Font(self.font_path, 23)
         self.game_state = "Running"
         self.selection_icon = pygame.transform.scale(
@@ -34,7 +34,7 @@ class LevelGameMode(GameMode):
             self.stage.update(self.screen, self.player1)
             self.player1.draw()
             #self.player2.draw()
-            self.player1.update(self.player1)
+            self.player1.update()
             #self.player2.update(self.player1)
             # Changing State to Paused if ESC pressed
             for event in events:
