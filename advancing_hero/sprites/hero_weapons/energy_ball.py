@@ -7,7 +7,7 @@ import math
 
 class EnergyBall(Sprite):
     """
-    Represents a sprite test
+    Represents a EnergyBall Sprite
     """
     def __init__(
         self,
@@ -21,8 +21,7 @@ class EnergyBall(Sprite):
         self.settings = settings
         self.phase = phase
         self.player = player
-        self.image = pygame.transform.scale2x(
-            self.image_list[self.image_frame])
+        self.image = self.image_list[self.image_frame]
         self.animation_framerate = 10
         self.rect = self.image.get_rect()
         self.damage = 1
@@ -41,6 +40,9 @@ class EnergyBall(Sprite):
 
     def update(self, stage):
         super().update()
+        if self.frame_counter % 5 == 0:
+            self.image_frame = (self.image_frame + 1) % 4
+            self.image = self.image_list[self.image_frame]
         self.hurt_enemies(stage)
 
         self.angle += self.ang_vel
@@ -51,7 +53,6 @@ class EnergyBall(Sprite):
             self.radius * math.sin(self.feq_y * self.angle * math.pi / 180)))
         self.rect.centerx = int(self.true_position.x)
         self.rect.centery = int(self.true_position.y)
-
 
     def hurt_enemies(self, stage):
         for enemy in stage.all_enemies.sprites():

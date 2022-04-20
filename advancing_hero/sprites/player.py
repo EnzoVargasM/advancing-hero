@@ -67,6 +67,7 @@ class Player(Sprite):
         self.alive = True
         self.mask = pygame.mask.from_surface(self.image.convert_alpha())
         self.invicibility_frames = 0
+        self.regular_font = pygame.freetype.Font(os.path.abspath('advancing_hero/fonts/zerovelo.ttf'), 12)
 
     def update(self):
         super().update()
@@ -76,32 +77,20 @@ class Player(Sprite):
         self.handle_movement()
         self.handle_breathing()
         self.handle_weapon()
-        self.screen.blit(self.weapon_slot, (0, 60))
-        if self.current_weapon == 'boomerang':
-            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-                os.path.abspath('advancing_hero/images/sprites/hero_weapons/boomerang/frame2.png')
-                ))
-            self.screen.blit(self.weapon_or_ability_icon, (10, 75))  # print weapon icon on screen
-        if self.current_weapon == 'arrow':
-            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-                os.path.abspath('advancing_hero/images/sprites/hero_weapons/arrow/arrow.png')))
-            self.screen.blit(self.weapon_or_ability_icon, (25, 75))  # print weapon icon on screen
-        if self.changing_weapon_cooldown > 0:
-            self.changing_weapon_cooldown -= 1
+        self.draw_slot_and_weapons()
+        self.update_cooldown()
         self.projectiles.update(self.stage)
         self.projectiles.draw(self.screen)
         self.health_bar.update()
         self.oxygen_bar.update()
-        if self.attack_cooldown > 0:
-            self.attack_cooldown -= 1
         if self.invicibility_frames > 0:
             self.invicibility_frames -= 1
         # Testing speed up effect (TSUE)
-        if self.timer_fast_player > 0:  # Potion heal speed up player test
-            self.timer_fast_player -= 1
-            if self.timer_fast_player == 0:
-                self.speed_base = self.settings.DEFAULT_PLAYER_SPEED
-                self.speed = self.speed_base
+        #if self.timer_fast_player > 0:  # Potion heal speed up player test
+        #    self.timer_fast_player -= 1
+        #    if self.timer_fast_player == 0:
+        #        self.speed_base = self.settings.DEFAULT_PLAYER_SPEED
+        #        self.speed = self.speed_base
 
     def handle_breathing(self):
         for tile in self.stage.tile_list:
@@ -126,13 +115,11 @@ class Player(Sprite):
         if key[pygame.K_v] and self.changing_weapon_cooldown == 0:
             if self.current_weapon == 'boomerang':
                 self.current_weapon = 'arrow'
-                self.changing_weapon_cooldown += 15
             elif self.current_weapon == 'arrow':
                 self.current_weapon = 'boomerang'
-                self.changing_weapon_cooldown += 15
+            self.changing_weapon_cooldown += 15
         if key[pygame.K_c]:
-            if self.current_weapon == 'boomerang' and len(
-                    self.projectiles.sprites()) <= 1:
+            if self.current_weapon == 'boomerang':
                 if not self.projectiles.has(self.weapon):  # Make sure only one boomerang exists
 
                     if self.moving_direction == 1:
@@ -256,9 +243,7 @@ class Player(Sprite):
                                                self.rect.y - scroll,
                                                self.rect.width,
                                                self.rect.height):
-                            pygame.event.post(
-                                pygame.event.Event(pygame.USEREVENT,
-                                                   customType='end_game'))
+                            pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
 
     def auto_scroll_left(self, scroll):
         self.rect.x -= scroll
@@ -280,6 +265,50 @@ class Player(Sprite):
                                 pygame.event.Event(pygame.USEREVENT,
                                                    customType='end_game'))
 
+    def update_cooldown(self):
+        if self.changing_weapon_cooldown > 0:
+            self.changing_weapon_cooldown -= 1
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
+
+    def draw_slot_and_weapons(self):
+        self.screen.blit(self.weapon_slot, (0, 60))
+        if self.current_weapon == 'boomerang':
+            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/boomerang/frame2.png')
+                ))
+            self.screen.blit(self.weapon_or_ability_icon, (10, 75))
+        elif self.current_weapon == 'arrow':
+            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/arrow/arrow.png')))
+            self.screen.blit(self.weapon_or_ability_icon, (25, 75))
+            self.regular_font.render_to(self.screen, (35, 110), (3 - len(self.projectiles.sprites())).__str__()+"X",
+                                        self.settings.BLACK)
+        elif self.current_weapon == 'regular_blast':
+            self.weapon_or_ability_icon = pygame.transform.scale(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/regular_blast/regular_blast1.png')), (45, 45))
+            self.screen.blit(self.weapon_or_ability_icon, (6, 67))
+        elif self.current_weapon == 'mega_blast':
+            self.weapon_or_ability_icon = pygame.transform.scale(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/mega_blast/blast1.png')), (50, 50))
+            self.screen.blit(self.weapon_or_ability_icon, (9, 64))
+        elif self.current_weapon == 'heal':
+            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/heal/heal.png')))
+            self.screen.blit(self.weapon_or_ability_icon, (15, 75))
+        elif self.current_weapon == 'circle_lissajous':
+            self.weapon_or_ability_icon = pygame.transform.scale(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/energy_ball/as_a_weapon/circle_mode.png')), (90, 90))
+            self.screen.blit(self.weapon_or_ability_icon, (-15, 47))
+        elif self.current_weapon == 'infinity_lissajous':
+            self.weapon_or_ability_icon = pygame.transform.scale(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/energy_ball/as_a_weapon/infinity_mode.png')), (90, 90))
+            self.screen.blit(self.weapon_or_ability_icon, (-15, 47))
+        elif self.current_weapon == 'powerful_lissajous':
+            self.weapon_or_ability_icon = pygame.transform.scale(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/energy_ball/as_a_weapon/especial_mode.png')), (90, 90))
+            self.screen.blit(self.weapon_or_ability_icon, (-15, 47))
+
     def draw(self):
         surface_to_blit = self.image
         if self.invicibility_frames > 0 and self.invicibility_frames % 2 == 0:
@@ -287,18 +316,11 @@ class Player(Sprite):
         self.screen.blit(surface_to_blit, self.rect)
         if self.settings.DEBUG:
             pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 2)
-        # Drawing health bar, oxygen bar and other images while paused
+        # Drawing health bar, oxygen bar and other images while paused (COPY from UPDATE)
         self.health_bar.update()
         self.oxygen_bar.update()
-        self.screen.blit(self.weapon_slot, (0, 60))
-        if self.current_weapon == 'boomerang':
-            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-                os.path.abspath('advancing_hero/images/sprites/hero_weapons/boomerang/frame2.png')))
-            self.screen.blit(self.weapon_or_ability_icon, (10, 75))  # print weapon icon on screen
-        if self.current_weapon == 'arrow':
-            self.weapon_or_ability_icon = pygame.transform.scale2x(pygame.image.load(
-                os.path.abspath('advancing_hero/images/sprites/hero_weapons/arrow/arrow.png')))
-            self.screen.blit(self.weapon_or_ability_icon, (25, 75))  # print weapon icon on screen
+        self.draw_slot_and_weapons()
+
 
     def walk_animation(self, still_frame, direction, flip=False):
         if self.walking_framerate == 0:
@@ -332,9 +354,9 @@ class Player(Sprite):
     def heal(self, heal):
         self.current_health = min(self.current_health + heal, self.max_health)
         # Testing speed up effect (TSUE)
-        self.timer_fast_player = 600
-        self.speed_base = self.speed_base * 5
-        self.speed = self.speed_base
+        #self.timer_fast_player = 600
+        #self.speed_base = self.speed_base * 5
+        #self.speed = self.speed_base
         return True
 
     def check_oxygen(self):

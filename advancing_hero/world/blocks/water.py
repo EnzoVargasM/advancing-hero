@@ -21,5 +21,5 @@ class Water(Block):
 
     def player_interaction(self, player, *args, **kwargs):
         super().player_interaction(player)
-        player.speed = 0.5 * player.speed_base
+        player.speed = max(0.5 * player.speed_base, 1)
         player.in_water = True

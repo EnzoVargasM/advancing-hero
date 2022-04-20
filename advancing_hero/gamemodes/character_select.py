@@ -97,14 +97,13 @@ class CharacterSelectScreen(GameMode):
                 self.icon_frame = 32
             elif self.icon_frame == 32:
                 self.icon_frame = 21
-
         self.selection_icon2 = pygame.transform.scale(
             pygame.image.load(
                 os.path.abspath(f'advancing_hero/images/sprites/player/frame{int(self.icon_frame / 10)}.png')),
             (100, 160))
         self.screen.blit(
             self.selection_icon2,
-            (600,300))
+            (600, 300))
 
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -115,7 +114,7 @@ class CharacterSelectScreen(GameMode):
                     if self.icon_position < len(self.hero_list)-1:
                         self.icon_position = self.icon_position + 1
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
-                    if self.icon_position == 0:
+                    if 0 <= self.icon_position <= 2:
                         # Update current hero in global database
                         with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
                             aux = self.json_data

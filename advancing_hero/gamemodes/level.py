@@ -1,8 +1,9 @@
 from .gamemode import GameMode
 from advancing_hero.world import World
-from advancing_hero.sprites import Player, PlayerMonk
+from advancing_hero.sprites import Player, PlayerMonk, PlayerMage
 import pygame
 import os
+import json
 
 
 class LevelGameMode(GameMode):
@@ -13,7 +14,16 @@ class LevelGameMode(GameMode):
         self.settings = settings
         self.play_music()
         self.stage = World(settings, self.level_file, screen, scroll_mode)
-        self.player1 = PlayerMonk((512, 288), settings, self.stage, self.screen)
+        # Load specific type of Player
+        with open('advancing_hero/world/journey_save_files.json') as save_files:
+            self.json_data = json.load(save_files)
+        save_files.close()
+        if self.json_data["current_hero"][0] == 0:
+            self.player1 = Player((512, 288), settings, self.stage, self.screen)
+        elif self.json_data["current_hero"][0] == 1:
+            self.player1 = PlayerMage((512, 288), settings, self.stage, self.screen)
+        elif self.json_data["current_hero"][0] == 2:
+            self.player1 = PlayerMonk((512, 288), settings, self.stage, self.screen)
         #self.player2 = Player2((612, 288), settings, self.stage, self.screen)
         self.helper_font = pygame.freetype.Font(self.font_path, 23)
         self.game_state = "Running"

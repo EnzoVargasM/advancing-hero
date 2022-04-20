@@ -6,6 +6,7 @@ from .boss_fire import BossFire
 import pygame
 import math
 import random
+import json
 
 
 class Boss(Sprite):
@@ -59,6 +60,10 @@ class Boss(Sprite):
         self.counter1 = 0
         self.flag1 = False
         self.flag2 = False
+
+        with open('advancing_hero/world/journey_save_files.json') as save_files:
+            self.json_data = json.load(save_files)
+        save_files.close()
 
     def update(self, player, stage):
         super().update()
@@ -256,7 +261,16 @@ class Boss(Sprite):
                 for tile in stage.tile_list:
                     tile[1].x = round(tile[1].x / 64) * 64
                 self.kill()
-                pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='win_game'))
+                # Save in database this stage was cleared
+                aux = self.json_data
+                if aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]] != 9:  # is not last stage
+                    if aux["current_level"][0] == aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]] - 1:
+                        aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]] = aux["current_level"][0] + 2
+                        with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
+                            json.dump(aux, outfile)
+                        outfile.close()
+
+                pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
 
     def shake_stage(self, stage):
         if self.frame_counter % 6 == 0:

@@ -38,6 +38,10 @@ class WinStage(Sprite):
                     1].top < stage.settings.screen_height and tile[2].is_solid:
                 if tile[1].colliderect(self.rect):
                     self.kill()
+        if self.frame_counter % 18 == 0:
+            # self.play_music()
+            self.image_frame = (self.image_frame + 1) % len(self.image_list)
+            self.image = self.image_list[self.image_frame]
 
     def player_collision(self, player):
         if self.rect.colliderect(player.rect):

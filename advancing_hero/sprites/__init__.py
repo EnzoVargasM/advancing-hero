@@ -3,8 +3,8 @@ Init file for sprites module
 """
 
 from .player import Player
-from .player2 import Player2
 from .player_monk import PlayerMonk
+from .player_mage import PlayerMage
 from .collectable.potion_heal import PotionHeal
 from .hero_weapons.boomerang import Boomerang
 from .hero_weapons.arrow import Arrow
