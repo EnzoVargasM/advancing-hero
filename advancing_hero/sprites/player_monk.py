@@ -28,14 +28,15 @@ class PlayerMonk(Player):
         self.projectiles.add(self.energy_ball_2)
         self.special_attack_cooldown = 0
         self.current_weapon = 'circle_lissajous'
-        self.speed_base = settings.DEFAULT_PLAYER_SPEED * 2
+        self.hero_base_speed = settings.DEFAULT_PLAYER_SPEED * 2
+        self.speed_base = self.hero_base_speed
 
     def handle_weapon(self):
         key = pygame.key.get_pressed()
         self.special_attack_cooldown = max(0, self.special_attack_cooldown - 1)
 
         if self.special_attack_cooldown == 1:
-            self.speed_base = settings.DEFAULT_PLAYER_SPEED * 2
+            self.speed_base = self.hero_base_speed
             self.current_weapon = 'circle_lissajous'
             self.energy_ball_1.feq_x = 1
             self.energy_ball_1.feq_y = 1
@@ -70,7 +71,7 @@ class PlayerMonk(Player):
                 self.energy_ball_2.ang_vel = 1
                 self.changing_weapon_cooldown += 15
         if key[pygame.K_c] and self.changing_weapon_cooldown == 0 and self.special_attack_cooldown == 0:
-            self.speed_base = settings.DEFAULT_PLAYER_SPEED / 4
+            self.speed_base = self.hero_base_speed / 4  # Slowest velocity possible 1px
             self.current_weapon = 'powerful_lissajous'
             self.changing_weapon_cooldown += 300
             self.special_attack_cooldown += 300

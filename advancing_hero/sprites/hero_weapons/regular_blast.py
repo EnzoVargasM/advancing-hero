@@ -39,8 +39,8 @@ class RegularBlast(Sprite):
             self.speed = pygame.Vector2((self.speed_abs, 0))
             self.image = pygame.transform.rotate(self.image, 270)
         self.rect = self.image.get_rect()
-        self.rect.x = self.temp_rect.x - self.blast_lenght/3
-        self.rect.y = self.temp_rect.y - self.blast_lenght/3
+        self.rect.centerx = self.temp_rect.centerx
+        self.rect.centery = self.temp_rect.centery
         self.damage = self.charging_quantity * 2
 
     def update(self, stage):

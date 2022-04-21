@@ -22,3 +22,4 @@ class Lava(Block):
     def player_interaction(self, player, *args, **kwargs):
         super().player_interaction(player)
         player.hurt(10)
+        player.speed = max(player.speed_base, 1)

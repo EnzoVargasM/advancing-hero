@@ -20,8 +20,8 @@ class Boomerang(Sprite):
             self.image_list[self.image_frame])
         temp_rect = self.rect
         self.rect = self.image.get_rect()
-        self.rect.x = temp_rect.x
-        self.rect.y = temp_rect.y
+        self.rect.centerx = temp_rect.centerx
+        self.rect.centery = temp_rect.centery
 
         self.animation_framerate = 10
         self.direction = initial_direction

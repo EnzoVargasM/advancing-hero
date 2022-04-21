@@ -33,8 +33,8 @@ class Arrow(Sprite):
             self.speed = pygame.Vector2((speed, 0))
             self.image = pygame.transform.rotate(self.image, 270)
         self.rect = self.image.get_rect()
-        self.rect.x = temp_rect.x
-        self.rect.y = temp_rect.y
+        self.rect.centerx = temp_rect.centerx
+        self.rect.centery = temp_rect.centery
         self.damage = 25
 
     def update(self, stage):

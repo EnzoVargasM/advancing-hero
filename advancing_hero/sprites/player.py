@@ -33,8 +33,9 @@ class Player(Sprite):
             position=position,
             max_health=max_health,
         )
-        self.speed_base = settings.DEFAULT_PLAYER_SPEED
-        self.speed = self.speed_base
+        self.hero_base_speed = settings.DEFAULT_PLAYER_SPEED  # Standard speed for each type of hero
+        self.speed_base = settings.DEFAULT_PLAYER_SPEED  # Base speed for modifying hero speed through buffs
+        self.speed = self.speed_base  # Actual speed calculated after block interaction
         self.screen = screen
         self.settings = settings
         self.stage = stage
@@ -140,7 +141,7 @@ class Player(Sprite):
                     self.projectiles.sprites()) < 3:
                 self.attack_cooldown += 15
                 self.weapon = weapons[self.current_weapon](
-                    (self.rect.centerx - 4, self.rect.centery),
+                    (self.rect.centerx, self.rect.centery),
                     self.moving_direction, self.settings)
                 self.projectiles.add(self.weapon)
 
@@ -320,7 +321,6 @@ class Player(Sprite):
         self.health_bar.update()
         self.oxygen_bar.update()
         self.draw_slot_and_weapons()
-
 
     def walk_animation(self, still_frame, direction, flip=False):
         if self.walking_framerate == 0:
