@@ -22,8 +22,7 @@ class BatAttack(Sprite):
                          max_health=max_health)
         self.direction = direction
         self.angle = direction_angle - math.pi / 2
-        self.image = pygame.transform.rotate(self.image,
-                                             180 * self.angle / math.pi)
+        self.image = pygame.transform.rotate(self.image, 180 * self.angle / math.pi)
         self.image = pygame.transform.scale2x(self.image)
         self.rect = self.image.get_rect()
         self.speed = 5
@@ -31,8 +30,7 @@ class BatAttack(Sprite):
         self.rect.centerx = position[0]
         self.rect.centery = position[1]
         self.damage = 4
-        self.music_path = os.path.abspath(
-            'advancing_hero/songs/bat_attack.wav')
+        self.music_path = os.path.abspath('advancing_hero/songs/bat_attack.wav')
         self.screen = screen
 
     def update(self, player, stage):

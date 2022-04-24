@@ -31,20 +31,20 @@ class CharacterSelectScreen(GameMode):
         self.commands_font = pygame.freetype.Font(self.font_path, 15)
         self.icon_position = 0
         self.music_path = os.path.abspath('advancing_hero/musics/sawsquarenoise-Stage3.ogg')
-        self.hero_list = [
+        self.hero_list = [["Archer", "Mage", "Monk"], [
             pygame.transform.scale(
                 pygame.image.load(
                     os.path.abspath('advancing_hero/images/sprites/player/frame2.png')),
                 (50, 80)),
             pygame.transform.scale(
                 pygame.image.load(
-                    os.path.abspath('advancing_hero/images/sprites/player2/frame2.png')),
+                    os.path.abspath('advancing_hero/images/sprites/player_mage/frame2.png')),
                 (50, 80)),
             pygame.transform.scale(
                 pygame.image.load(
-                    os.path.abspath('advancing_hero/images/sprites/player3/frame2.png')),
+                    os.path.abspath('advancing_hero/images/sprites/player_monk/frame2.png')),
                 (50, 80))
-        ]
+        ]]
         self.tick = 0  # artificial timer
         self.icon_frame = 12  # Keep control of frame changes
         with open('advancing_hero/world/journey_save_files.json') as save_files:
@@ -69,15 +69,14 @@ class CharacterSelectScreen(GameMode):
                                  "SPACE or ENTER: ENTER   W or UP: UP   S or DOWN: DOWN",
                                  self.settings.BLACK)
 
-        for i in range(len(self.hero_list)):
+        for i in range(len(self.hero_list[1])):
             self.screen.blit(
-                self.hero_list[i],
-                (self.settings.screen_width / 2 - 150,
-                 self.settings.screen_height / 2 - 170 + i * 80))
+                self.hero_list[1][i],
+                (self.settings.screen_width / 2 - 150, self.settings.screen_height / 2 - 170 + i * 80))
             self.menu_font.render_to(self.screen,
                                      (self.settings.screen_width / 2 - 350,
                                       self.settings.screen_height / 2 - 150 + i * 80),
-                                     f"Class {i+1}", self.settings.BLACK)
+                                     self.hero_list[0][i], self.settings.BLACK)
 
         self.screen.blit(
             self.selection_icon,
@@ -97,13 +96,30 @@ class CharacterSelectScreen(GameMode):
                 self.icon_frame = 32
             elif self.icon_frame == 32:
                 self.icon_frame = 21
-        self.selection_icon2 = pygame.transform.scale(
-            pygame.image.load(
-                os.path.abspath(f'advancing_hero/images/sprites/player/frame{int(self.icon_frame / 10)}.png')),
-            (100, 160))
-        self.screen.blit(
-            self.selection_icon2,
-            (600, 300))
+        if self.icon_position == 0:
+            self.selection_icon2 = pygame.transform.scale(
+                pygame.image.load(
+                    os.path.abspath(f'advancing_hero/images/sprites/player/frame{int(self.icon_frame / 10)}.png')),
+                (100, 140))
+            self.screen.blit(
+                self.selection_icon2,
+                (600, 330))
+        elif self.icon_position == 1:
+            self.selection_icon2 = pygame.transform.scale(
+                pygame.image.load(
+                    os.path.abspath(f'advancing_hero/images/sprites/player_mage/frame{int(self.icon_frame / 10)}.png')),
+                (100, 140))
+            self.screen.blit(
+                self.selection_icon2,
+                (600, 330))
+        elif self.icon_position == 2:
+            self.selection_icon2 = pygame.transform.scale(
+                pygame.image.load(
+                    os.path.abspath(f'advancing_hero/images/sprites/player_monk/frame{int(self.icon_frame / 10)}.png')),
+                (100, 140))
+            self.screen.blit(
+                self.selection_icon2,
+                (600, 330))
 
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -111,7 +127,7 @@ class CharacterSelectScreen(GameMode):
                     if self.icon_position > 0:
                         self.icon_position = self.icon_position - 1
                 if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    if self.icon_position < len(self.hero_list)-1:
+                    if self.icon_position < len(self.hero_list[1])-1:
                         self.icon_position = self.icon_position + 1
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                     if 0 <= self.icon_position <= 2:

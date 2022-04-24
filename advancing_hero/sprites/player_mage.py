@@ -22,7 +22,7 @@ class PlayerMage(Player):
             settings=settings,
             stage=stage,
             screen=screen,
-            path=os.path.abspath('advancing_hero/images/sprites/player/'),
+            path=os.path.abspath('advancing_hero/images/sprites/player_mage/'),
             max_health=100,
         )
         self.special_attack_cooldown = 0

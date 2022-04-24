@@ -25,7 +25,7 @@ class MegaBlast(Sprite):
         self.blast_lenght = self.charging_quantity * 4
         self.image = pygame.transform.scale(self.image_list[self.image_frame], (self.blast_lenght, self.blast_lenght))
         self.animation_framerate = 10
-        self.speed_abs = 4 + self.charging_quantity/20
+        self.speed_abs = 14 - min(self.charging_quantity/20, 10)
         self.initial_direction = initial_direction
         if initial_direction == 1:
             self.speed = pygame.Vector2((0, -self.speed_abs))
@@ -41,7 +41,7 @@ class MegaBlast(Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = self.temp_rect.centerx
         self.rect.centery = self.temp_rect.centery
-        self.damage = 4
+        self.damage = 1 + self.charging_quantity/30
 
     def update(self, stage):
         super().update()

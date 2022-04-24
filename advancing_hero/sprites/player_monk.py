@@ -19,7 +19,7 @@ class PlayerMonk(Player):
             settings=settings,
             stage=stage,
             screen=screen,
-            path=os.path.abspath('advancing_hero/images/sprites/player/'),
+            path=os.path.abspath('advancing_hero/images/sprites/player_monk/'),
             max_health=100,
         )
         self.energy_ball_1 = EnergyBall(position, settings, self, 0)
@@ -28,7 +28,7 @@ class PlayerMonk(Player):
         self.projectiles.add(self.energy_ball_2)
         self.special_attack_cooldown = 0
         self.current_weapon = 'circle_lissajous'
-        self.hero_base_speed = settings.DEFAULT_PLAYER_SPEED * 2
+        self.hero_base_speed = settings.DEFAULT_PLAYER_SPEED * 3/2
         self.speed_base = self.hero_base_speed
 
     def handle_weapon(self):
@@ -42,8 +42,8 @@ class PlayerMonk(Player):
             self.energy_ball_1.feq_y = 1
             self.energy_ball_2.feq_x = 1
             self.energy_ball_2.feq_y = 1
-            self.energy_ball_1.damage = 3
-            self.energy_ball_2.damage = 3
+            self.energy_ball_1.damage = 2
+            self.energy_ball_2.damage = 2
             self.energy_ball_1.ang_vel = 1
             self.energy_ball_2.ang_vel = 1
 
@@ -54,8 +54,8 @@ class PlayerMonk(Player):
                 self.energy_ball_1.feq_y = 2
                 self.energy_ball_2.feq_x = 1
                 self.energy_ball_2.feq_y = 2
-                self.energy_ball_1.damage = 3
-                self.energy_ball_2.damage = 3
+                self.energy_ball_1.damage = 2
+                self.energy_ball_2.damage = 2
                 self.energy_ball_1.ang_vel = 1
                 self.energy_ball_2.ang_vel = 1
                 self.changing_weapon_cooldown += 15
@@ -65,13 +65,13 @@ class PlayerMonk(Player):
                 self.energy_ball_1.feq_y = 1
                 self.energy_ball_2.feq_x = 1
                 self.energy_ball_2.feq_y = 1
-                self.energy_ball_1.damage = 3
-                self.energy_ball_2.damage = 3
+                self.energy_ball_1.damage = 2
+                self.energy_ball_2.damage = 2
                 self.energy_ball_1.ang_vel = 1
                 self.energy_ball_2.ang_vel = 1
                 self.changing_weapon_cooldown += 15
         if key[pygame.K_c] and self.changing_weapon_cooldown == 0 and self.special_attack_cooldown == 0:
-            self.speed_base = self.hero_base_speed / 4  # Slowest velocity possible 1px
+            self.speed_base = self.hero_base_speed / 6  # Slowest velocity possible 1px
             self.current_weapon = 'powerful_lissajous'
             self.changing_weapon_cooldown += 300
             self.special_attack_cooldown += 300

@@ -1,12 +1,12 @@
 import os
-from ..sprite import Sprite
-from ..status_bars.healthbar import HealthBar
+from .regular_enemy import RegularEnemy
 from .ship_attack import ShipAttack
+from ..status_bars.healthbar import HealthBar
 import pygame
 import math
 
 
-class Ship(Sprite):
+class Ship(RegularEnemy):
     """
     Represents a Ship
     """
@@ -19,13 +19,12 @@ class Ship(Sprite):
     ) -> None:
         super().__init__(path=os.path.abspath(path),
                          position=position,
+                         screen=screen,
                          max_health=max_health)
-        self.animation_framerate = 8
-        self.attack_framerate = 180
         self.health_bar = HealthBar(screen=screen,
                                     parent_sprite=self,
                                     offset=(0, -60))
-        self.screen = screen
+        self.attack_framerate = 180
         self.damage = 10
 
     def update(self, player, stage):
@@ -57,12 +56,3 @@ class Ship(Sprite):
                                         screen=self.screen)
             if self.alive():
                 self.groups()[0].add(new_projectile)
-
-    def player_collision(self, player):
-        if self.rect.colliderect(player.rect):
-            player.hurt(self.damage)
-            player.push()
-
-    def hurt(self, damage):
-        self.current_health = max(self.current_health - damage, 0)
-        return True

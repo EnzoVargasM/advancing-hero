@@ -93,11 +93,21 @@ class WorldMap(GameMode):
                                      (10, self.settings.screen_height - 30),
                                      "Press Left and Right to Select Stage",
                                      self.settings.BLACK)
-
-        self.selection_icon = pygame.transform.scale(
-            pygame.image.load(
-                os.path.abspath(f'advancing_hero/images/sprites/player/frame{int(self.icon_frame/10)}.png')),
-            (25, 40))
+        if self.json_data["current_hero"][0] == 0:
+            self.selection_icon = pygame.transform.scale(
+                pygame.image.load(
+                    os.path.abspath(f'advancing_hero/images/sprites/player/frame{int(self.icon_frame/10)}.png')),
+                (25, 40))
+        elif self.json_data["current_hero"][0] == 1:
+            self.selection_icon = pygame.transform.scale(
+                pygame.image.load(
+                    os.path.abspath(f'advancing_hero/images/sprites/player_mage/frame{int(self.icon_frame/10)}.png')),
+                (25, 40))
+        elif self.json_data["current_hero"][0] == 2:
+            self.selection_icon = pygame.transform.scale(
+                pygame.image.load(
+                    os.path.abspath(f'advancing_hero/images/sprites/player_monk/frame{int(self.icon_frame/10)}.png')),
+                (25, 40))
         self.screen.blit(
             self.selection_icon,
             self.stage_positions[self.icon_position])

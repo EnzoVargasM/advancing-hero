@@ -52,7 +52,7 @@ class Player(Sprite):
         self.weapon = weapons[self.current_weapon]
         self.attack_cooldown = 0
         self.projectiles = pygame.sprite.Group()
-        self.timer_fast_player = 0
+        # self.timer_fast_player = 0
         self.health_bar = HealthBar(screen=screen,
                                     parent_sprite=self,
                                     offset=(0, -38),

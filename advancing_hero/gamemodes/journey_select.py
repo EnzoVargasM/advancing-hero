@@ -36,11 +36,11 @@ class JourneySelect(GameMode):
                 (40, 64)),
             pygame.transform.scale(
                 pygame.image.load(
-                    os.path.abspath('advancing_hero/images/sprites/player2/frame2.png')),
+                    os.path.abspath('advancing_hero/images/sprites/player_mage/frame2.png')),
                 (40, 64)),
             pygame.transform.scale(
                 pygame.image.load(
-                    os.path.abspath('advancing_hero/images/sprites/player3/frame2.png')),
+                    os.path.abspath('advancing_hero/images/sprites/player_monk/frame2.png')),
                 (40, 64))
         ]
 
@@ -153,7 +153,7 @@ class JourneySelect(GameMode):
                             pygame.event.post(
                                 pygame.event.Event(pygame.USEREVENT, customType='character_select'))
                         elif self.icon_position == 1:  # Copy file
-                            with open('advancing_hero/world/journey_save_files_aux.json', 'w') as outfile:
+                            with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
                                 aux = self.json_data  # CHANGE JSON AUX for permanent changes
                                 if aux["saves"][0][0] == 0:
                                     aux["saves"][0] = aux["saves"][self.file_selected]
@@ -167,7 +167,7 @@ class JourneySelect(GameMode):
                             self.icon_position = 0
                             self.file_selected = -1
                         elif self.icon_position == 2:  # Erase file
-                            with open('advancing_hero/world/journey_save_files_aux.json', 'w') as outfile:
+                            with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
                                 aux = self.json_data  # CHANGE JSON AUX for permanent changes
                                 aux["saves"][self.file_selected] = [0, 0, [0, 0, 0]]
                                 json.dump(aux, outfile)

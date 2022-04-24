@@ -19,12 +19,14 @@ class Sprite(pygame.sprite.Sprite):
         image_files.sort()
         for file in image_files:
             if file.endswith(".png"):
-                self.image_list.append(
-                    pygame.image.load(os.path.join(path, file)))
+                self.image_list.append(pygame.image.load(os.path.join(path, file)))
         self.image = self.image_list[0]
         self.rect = self.image.get_rect()
         self.rect.centerx = position[0]
         self.rect.centery = position[1]
+        # Adding Hitbox to use as interaction instead of rect
+        self.hitbox = self.rect.inflate(0, 26)
+
         self.frame_counter = 0
         self.max_health = max_health
         self.current_health = max_health

@@ -1,12 +1,11 @@
 import os
-from ..sprite import Sprite
-from ..status_bars.healthbar import HealthBar
+from .regular_enemy import RegularEnemy
 from .bat_attack import BatAttack
 import pygame
 import math
 
 
-class Bat(Sprite):
+class Bat(RegularEnemy):
     """
     Represents a bat
     """
@@ -19,14 +18,8 @@ class Bat(Sprite):
     ) -> None:
         super().__init__(path=os.path.abspath(path),
                          position=position,
+                         screen=screen,
                          max_health=max_health)
-        self.animation_framerate = 8
-        self.attack_framerate = 90
-        self.health_bar = HealthBar(screen=screen,
-                                    parent_sprite=self,
-                                    offset=(0, -32))
-        self.screen = screen
-        self.damage = 5
 
     def update(self, player, stage):
         super().update()
@@ -55,11 +48,3 @@ class Bat(Sprite):
             if self.alive():
                 self.groups()[0].add(new_projectile)
 
-    def player_collision(self, player):
-        if self.rect.colliderect(player.rect):
-            player.hurt(self.damage)
-            player.push()
-
-    def hurt(self, damage):
-        self.current_health = max(self.current_health - damage, 0)
-        return True
