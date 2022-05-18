@@ -32,6 +32,14 @@ class PlayerMage(Player):
         self.attack_cooldown_heal = 0
         self.attack_cooldown_mega = 0
         self.speed_buff_cooldown = 0
+        # Last cooldowns applied to keep track of recharge
+        self.last_attack_cooldown = -1
+        self.last_attack_cooldown_heal = -1
+        self.last_attack_cooldown_mega = -1
+
+        self.cooldown_img = pygame.transform.scale2x(pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/hero_weapons/weapon_slot/weapon_cooldown_shadow.png')
+            ))
 
     def handle_weapon(self):
 
@@ -78,16 +86,19 @@ class PlayerMage(Player):
         if not key[pygame.K_c] and self.time_charging > 0:
             if self.current_weapon == 'regular_blast':
                 self.attack_cooldown += self.time_charging
+                self.last_attack_cooldown = self.time_charging
                 self.weapon = weapons[self.current_weapon]((self.rect.centerx, self.rect.centery),
                                                            self.moving_direction, self.settings, self.time_charging)
                 self.projectiles.add(self.weapon)
             elif self.current_weapon == 'mega_blast':
                 self.attack_cooldown_mega += self.time_charging * 4
+                self.last_attack_cooldown_mega = self.time_charging * 4
                 self.weapon = weapons[self.current_weapon]((self.rect.centerx, self.rect.centery),
                                                            self.moving_direction, self.settings, self.time_charging)
                 self.projectiles.add(self.weapon)
             elif self.current_weapon == 'heal':
                 self.attack_cooldown_heal += self.time_charging * 5
+                self.last_attack_cooldown_heal = self.time_charging * 5
                 # Buffs
                 self.heal(self.time_charging/20)
                 self.speed_base += self.time_charging/5
@@ -116,6 +127,20 @@ class PlayerMage(Player):
             self.speed_buff_cooldown -= 1
         if self.speed_buff_cooldown == 0:
             self.speed_base = self.hero_base_speed
+
+        if self.current_weapon == 'regular_blast':
+
+            ratio = self.attack_cooldown / self.last_attack_cooldown
+            self.screen.blit(self.cooldown_img, (8, 70+round(40*(1-ratio))),
+                             (0, 0, 43, (round(40 * ratio))))
+        elif self.current_weapon == 'heal':
+            ratio = self.attack_cooldown_heal / self.last_attack_cooldown_heal
+            self.screen.blit(self.cooldown_img, (8, 70 + round(40 * (1 - ratio))),
+                             (0, 0, 43, (round(40 * ratio))))
+        elif self.current_weapon == 'mega_blast':
+            ratio = self.attack_cooldown_mega / self.last_attack_cooldown_mega
+            self.screen.blit(self.cooldown_img, (8, 70 + round(40 * (1 - ratio))),
+                             (0, 0, 43, (round(40 * ratio))))
 
     def handle_movement(self):
         dx = 0
