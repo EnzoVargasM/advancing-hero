@@ -41,6 +41,11 @@ class PlayerMage(Player):
                 os.path.abspath('advancing_hero/images/sprites/hero_weapons/weapon_slot/weapon_cooldown_shadow.png')
             ))
 
+        self.star_fx = pygame.image.load(
+            os.path.abspath('advancing_hero/images/sprites/effects/star_fx.png')
+        )
+
+
     def handle_weapon(self):
 
         key = pygame.key.get_pressed()
@@ -60,6 +65,13 @@ class PlayerMage(Player):
                 else:
                     self.time_charging += 1
                 print(self.time_charging)
+                tmp = self.time_charging
+                if tmp < 0:
+                    tmp = 0
+                star_new_img = pygame.transform.scale(self.star_fx, (17*(tmp/100), 17*(tmp/100)))
+                self.screen.blit(star_new_img, (self.rect.x + self.rect.width / 2 - round(9 * (tmp / 100)), self.rect.y - 18))
+
+
             if self.current_weapon == 'mega_blast' and self.attack_cooldown_mega == 0 and len(
                     self.projectiles.sprites()) < 2:
                 if self.time_charging > 60:
@@ -72,6 +84,12 @@ class PlayerMage(Player):
                 else:
                     self.time_charging += 1
                 print(self.time_charging)
+                tmp = self.time_charging
+                if tmp < 0:
+                    tmp = 0
+                star_new_img = pygame.transform.scale(self.star_fx, (17 * (tmp / 100), 17 * (tmp / 100)))
+                self.screen.blit(star_new_img, (self.rect.x + self.rect.width / 2 - round(9 * (tmp / 100)), self.rect.y - 18))
+
             if self.current_weapon == 'heal' and self.attack_cooldown_heal == 0:
                 if self.time_charging > 60:
                     if self.time_charging > 120:
@@ -83,6 +101,12 @@ class PlayerMage(Player):
                 else:
                     self.time_charging += 1
                 print(self.time_charging)
+                tmp = self.time_charging
+                if tmp < 0:
+                    tmp = 0
+                star_new_img = pygame.transform.scale(self.star_fx, (17 * (tmp / 100), 17 * (tmp / 100)))
+                self.screen.blit(star_new_img, (self.rect.x + self.rect.width / 2 - round(9 * (tmp / 100)), self.rect.y - 18))
+
         if not key[pygame.K_c] and self.time_charging > 0:
             if self.current_weapon == 'regular_blast':
                 self.attack_cooldown += self.time_charging
