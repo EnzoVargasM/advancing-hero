@@ -30,7 +30,11 @@ class World:
             3: blocks.Water,
             4: blocks.Brick,
             5: blocks.Asphalt,
-            6: blocks.Lava
+            6: blocks.Lava,
+            7: blocks.CurrentWaterLeft,
+            8: blocks.CurrentWaterRight,
+            9: blocks.CurrentWaterUp,
+            10: blocks.CurrentWaterDown
         }
 
         self.sprites = {

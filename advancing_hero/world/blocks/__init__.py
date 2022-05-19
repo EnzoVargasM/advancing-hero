@@ -7,3 +7,4 @@ from .dirt import Dirt
 from .grass import Grass
 from .water import Water
 from .lava import Lava
+from .current_water import CurrentWaterLeft, CurrentWaterDown, CurrentWaterRight, CurrentWaterUp

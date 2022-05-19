@@ -10,7 +10,7 @@ current_level = 0
 
 ## Speeds
 WORLD_SPEED = 1
-DEFAULT_PLAYER_SPEED = 4
+DEFAULT_PLAYER_SPEED = 5
 
 
 ## Block names
