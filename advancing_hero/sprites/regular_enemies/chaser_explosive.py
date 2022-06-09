@@ -49,7 +49,7 @@ class ChaserExplosive(RegularEnemy):
 
         if self.frame_counter % self.animation_framerate == 0:
             temp_rect = self.rect
-            self.image_frame = (self.image_frame + 1) % 4
+            self.image_frame = (self.image_frame + 1) % 1
             self.image = self.image_list[self.image_frame]
             self.rect = self.image.get_rect()
             self.rect.centerx = temp_rect.centerx

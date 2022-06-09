@@ -14,7 +14,7 @@ class Chaser(RegularEnemy):
         position,
         screen,
         max_health: float = 100,
-        path: str = 'advancing_hero/images/sprites/regular_enemies/bat/',
+        path: str = 'advancing_hero/images/sprites/regular_enemies/chaser/',
     ) -> None:
         super().__init__(path=os.path.abspath(path),
                          position=position,
@@ -48,7 +48,10 @@ class Chaser(RegularEnemy):
 
         delta_x = player.rect.centerx - self.rect.centerx
         delta_y = player.rect.centery - self.rect.centery
-        direction = pygame.math.Vector2.normalize(pygame.Vector2((delta_x, delta_y)))
+        dir_tmp = pygame.Vector2((delta_x, delta_y))
+        if dir_tmp.magnitude() == 0:
+            return
+        direction = pygame.math.Vector2.normalize(dir_tmp)
         self.xpos += direction.x * self.speed
         self.ypos += direction.y * self.speed
 

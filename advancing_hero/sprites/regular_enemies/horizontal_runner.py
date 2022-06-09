@@ -16,7 +16,7 @@ class HorizontalRunner(RegularEnemy):
         position,
         screen,
         max_health: float = 100,
-        path: str = 'advancing_hero/images/sprites/regular_enemies/bat/',
+        path: str = 'advancing_hero/images/sprites/regular_enemies/horizontal_runner/',
     ) -> None:
         self.side = random.randint(0, 1)
         self.activated = False
@@ -29,6 +29,8 @@ class HorizontalRunner(RegularEnemy):
                          position=correct_position,
                          screen=screen,
                          max_health=max_health)
+
+        self.image = self.image_list[1-self.side]
 
     def update(self, player, stage):
         super().update()
@@ -43,20 +45,12 @@ class HorizontalRunner(RegularEnemy):
 
         if self.activated:
             if self.side == 0:
-                self.rect.x += 3
+                self.rect.x += 6
             else:
-                self.rect.x -= 3
+                self.rect.x -= 6
         else:
             if abs(player.rect.y - self.rect.y) <= 10:
                 self.activated = True
-
-        if self.frame_counter % self.animation_framerate == 0:
-            temp_rect = self.rect
-            self.image_frame = (self.image_frame + 1) % len(self.image_list)
-            self.image = self.image_list[self.image_frame]
-            self.rect = self.image.get_rect()
-            self.rect.centerx = temp_rect.centerx
-            self.rect.centery = temp_rect.centery
 
         self.health_bar.update()
         self.player_collision(player)
