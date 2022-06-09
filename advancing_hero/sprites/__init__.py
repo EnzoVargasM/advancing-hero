@@ -17,3 +17,5 @@ from .boss_enemies.boss_fire import BossFire
 from .collectable.win_stage import WinStage
 from .regular_enemies.vertical_runner import VerticalRunner
 from .regular_enemies.horizontal_runner import HorizontalRunner
+from .regular_enemies.chaser import Chaser
+from .regular_enemies.chaser_explosive import ChaserExplosive
