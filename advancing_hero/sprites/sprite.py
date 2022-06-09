@@ -1,6 +1,8 @@
 """
 Base class to implement sprites
 """
+import random
+
 import pygame
 import os
 from advancing_hero import settings

@@ -1,7 +1,9 @@
 import os
+import random
+
 from ..sprite import Sprite
 from ..status_bars.healthbar import HealthBar
-
+from ..collectable.potion_heal import PotionHeal
 
 class RegularEnemy(Sprite):
     """
@@ -37,3 +39,12 @@ class RegularEnemy(Sprite):
     def hurt(self, damage):
         self.current_health = max(self.current_health - damage, 0)
         return True
+
+    def spawn_random_potion(self):
+        rng = random.randint(1, 100)
+
+        if 1 <= rng <= 10:
+            new_projectile = PotionHeal((self.rect.x, self.rect.y), self.screen)
+            if self.alive():
+                self.groups()[0].add(new_projectile)
+

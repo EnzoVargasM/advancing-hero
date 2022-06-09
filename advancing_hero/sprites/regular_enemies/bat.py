@@ -25,6 +25,7 @@ class Bat(RegularEnemy):
         super().update()
         if self.current_health <= 0 or self.rect.colliderect(
                 self.screen.get_rect()) == 0:
+            self.spawn_random_potion()
             self.kill()
         self.rect.y += 1
         if self.frame_counter % self.animation_framerate == 0:

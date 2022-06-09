@@ -31,6 +31,7 @@ class Ship(RegularEnemy):
         super().update()
         if self.current_health <= 0 or self.rect.colliderect(
                 self.screen.get_rect()) == 0:
+            self.spawn_random_potion()
             self.kill()
         self.rect.y += stage.scroll_amount
 
