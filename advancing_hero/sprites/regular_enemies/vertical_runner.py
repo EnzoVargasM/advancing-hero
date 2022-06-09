@@ -14,12 +14,29 @@ class VerticalRunner(RegularEnemy):
         position,
         screen,
         max_health: float = 100,
-        path: str = 'advancing_hero/images/sprites/regular_enemies/bat/',
+        path: str = 'advancing_hero/images/sprites/regular_enemies/vertical_runner/',
     ) -> None:
         super().__init__(path=os.path.abspath(path),
                          position=position,
                          screen=screen,
                          max_health=max_health)
+        for i in range(len(self.image_list)):
+            self.image_list[i] = \
+                pygame.transform.scale(self.image_list[i],
+                                       (self.image.get_rect().width * 2,
+                                        self.image.get_rect().height * 2))
+            self.health_bar.offset = (22, -64)
+
+        self.image = self.image_list[0]
+        self.rect = self.image.get_rect()
+        self.rect.centerx = position[0]
+        self.rect.centery = position[1]
+
+        self.health_bar.initial_width = self.rect.width
+        self.health_bar.image = pygame.transform.scale(
+            pygame.image.load(
+                os.path.abspath('advancing_hero/images/sprites/status_bars/healthbar/healthbar_enemies.png')),
+            (self.health_bar.initial_width, self.health_bar.height))
 
     def update(self, player, stage):
         super().update()
