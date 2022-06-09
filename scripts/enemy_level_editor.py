@@ -6,7 +6,8 @@ from os import path
 import json
 ##### ENEMIES - ÚNICA PARTE EDITÁVEL DO CÓDIGO ###########
 enemy_name = 'bat_sprite'
-enemy_list = ['bat_sprite', 'monster_sprite', 'ship_sprite', 'potion_heal', 'boss', 'win_stage']
+enemy_list = ['bat_sprite', 'monster_sprite', 'ship_sprite', 'potion_heal', 'boss', 'win_stage',
+              'vertical_runner', 'horizontal_runner', 'chaser', 'chaser_explosive', 'potion_speed']
 enemies_available = {
     'bat_sprite':
     pygame.image.load(
@@ -27,7 +28,28 @@ enemies_available = {
     'win_stage':
         pygame.image.load(
             path.abspath(
-                '../advancing_hero/images/sprites/win_stage/win_stage1.png'))
+                '../advancing_hero/images/sprites/win_stage/win_stage1.png')),
+    'vertical_runner':
+        pygame.image.load(
+            path.abspath(
+                '../advancing_hero/images/sprites/regular_enemies/vertical_runner/a.png')),
+    'horizontal_runner':
+            pygame.image.load(
+                path.abspath(
+                    '../advancing_hero/images/sprites/regular_enemies/horizontal_runner/a.png')),
+    'chaser':
+        pygame.image.load(
+            path.abspath(
+                '../advancing_hero/images/sprites/regular_enemies/chaser/a.png')),
+    'chaser_explosive':
+        pygame.image.load(
+            path.abspath(
+                '../advancing_hero/images/sprites/regular_enemies/chaser_explosive/a.png')),
+    'potion_speed':
+            pygame.image.load(
+                path.abspath(
+                    '../advancing_hero/images/sprites/potion_speed/speedup_item.png')),
+
 }
 ###########################################################
 
