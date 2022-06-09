@@ -43,7 +43,7 @@ class RegularEnemy(Sprite):
     def spawn_random_potion(self):
         rng = random.randint(1, 100)
 
-        if 1 <= rng <= 10:
+        if 1 <= rng <= 100:
             new_projectile = PotionHeal((self.rect.x, self.rect.y), self.screen)
             if self.alive():
                 self.groups()[0].add(new_projectile)
