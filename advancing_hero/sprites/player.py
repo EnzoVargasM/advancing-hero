@@ -136,6 +136,11 @@ class Player(Sprite):
                         (self.rect.centerx, self.rect.centery), direction,
                         self, self.settings)
                     self.projectiles.add(self.weapon)
+                    # Play SFX
+                    sfx = os.path.abspath('advancing_hero/songs/boomerang1.mp3')
+                    sound = pygame.mixer.Sound(sfx)
+                    sound.set_volume(0.5)
+                    pygame.mixer.Channel(8).play(sound)
 
             if self.current_weapon == 'arrow' and self.attack_cooldown == 0 and len(
                     self.projectiles.sprites()) < 3:
@@ -144,6 +149,11 @@ class Player(Sprite):
                     (self.rect.centerx, self.rect.centery),
                     self.moving_direction, self.settings)
                 self.projectiles.add(self.weapon)
+                # Play SFX
+                sfx = os.path.abspath('advancing_hero/songs/bow_arrow.mp3')
+                sound = pygame.mixer.Sound(sfx)
+                sound.set_volume(0.5)
+                pygame.mixer.Channel(7).play(sound)
 
     def handle_movement(self):
         dx = 0

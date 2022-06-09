@@ -135,9 +135,15 @@ while run:
     draw_world()
 
     #text showing current level
-    draw_text(f'Up: {up_ticks}, Right: {right_tiks}', font, white, tile_size, screen_height - 60)
-    draw_text('Press UP or DOWN to change level', font, white, tile_size,
+    draw_text(f'Up: {up_ticks}, Right: {right_tiks}', font, white, tile_size, screen_height - 80)
+    draw_text('Press UP, DOWN, LEFT and RIGHT to change level', font, white, tile_size,
+              screen_height - 60)
+    draw_text('Block Type:', font, white, tile_size,
               screen_height - 40)
+    draw_text('Types: Q - Floor, W - Wall, E - Water ...', font, white, 250,
+              screen_height - 40)
+    img = pygame.transform.scale(img_list[block_type - 1], (tile_size/2, tile_size/2))
+    screen.blit(img, (170, screen_height - 40))
 
     #event handler
     for event in pygame.event.get():

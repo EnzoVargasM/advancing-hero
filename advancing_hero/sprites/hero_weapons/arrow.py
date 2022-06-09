@@ -60,4 +60,11 @@ class Arrow(Sprite):
                     self.damage)  # Interactable enemies must return true
                 # That is done so the projectiles don't interact with the player's attacks
                 if hit:
+                    # Play SFX
+                    sfx = os.path.abspath('advancing_hero/songs/arrow2.mp3')
+                    sound = pygame.mixer.Sound(sfx)
+                    sound.set_volume(1)
+                    pygame.mixer.Channel(6).play(sound)
+
                     self.kill()
+

@@ -127,6 +127,13 @@ class WorldMap(GameMode):
                             aux["current_level"][0] = self.icon_position
                             json.dump(aux, outfile)
                         outfile.close()
+                        # Play stage Song
+                        str_fase = 'advancing_hero/songs/fases_'+(self.icon_position+1).__str__()+'.mp3'
+                        ost = os.path.abspath(str_fase)
+                        pygame.mixer.music.load(ost)
+                        pygame.mixer.music.set_volume(0.4)
+                        pygame.mixer.music.play(-1)
+
                         pygame.event.post(
                             pygame.event.Event(pygame.USEREVENT,
                                                customType='init_level',

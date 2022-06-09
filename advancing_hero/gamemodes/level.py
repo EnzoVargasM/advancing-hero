@@ -10,9 +10,7 @@ class LevelGameMode(GameMode):
     def __init__(self, screen, level_file, settings, scroll_mode="Down"):
         super().__init__(screen)
         self.level_file = level_file
-        self.music_path = os.path.abspath('advancing_hero/songs/level1_music.wav')
         self.settings = settings
-        self.play_music()
         self.stage = World(settings, self.level_file, screen, scroll_mode)
         # Load specific type of Player
         with open('advancing_hero/world/journey_save_files.json') as save_files:
@@ -32,12 +30,6 @@ class LevelGameMode(GameMode):
                 os.path.abspath('advancing_hero/images/select_icon.png')),
             (40, 40))
         self.icon_position = 0
-
-    def play_music(self):
-        pygame.mixer.init()
-        #pygame.mixer.music.load(self.music_path)
-        #pygame.mixer.music.set_volume(0.5)
-        #pygame.mixer.music.play(-1)
 
     def loop(self, events):
         if self.game_state == "Running":
@@ -82,6 +74,12 @@ class LevelGameMode(GameMode):
                             self.game_state = "Running"
                         elif self.icon_position == 1:
                             pygame.time.wait(150)
+                            # Change ost
+                            ost = os.path.abspath('advancing_hero/songs/title_screen_song.mp3')
+                            pygame.mixer.music.load(ost)
+                            pygame.mixer.music.set_volume(0.7)
+                            pygame.mixer.music.play(-1)
+
                             pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
                         elif self.icon_position == 2:
                             pygame.time.wait(150)
