@@ -43,7 +43,9 @@ class World:
             'potion_heal': sprites.PotionHeal,
             'ship_sprite': sprites.Ship,
             'boss': sprites.Boss,
-            'win_stage': sprites.WinStage
+            'win_stage': sprites.WinStage,
+            'vertical_runner': sprites.VerticalRunner,
+            'horizontal_runner': sprites.HorizontalRunner
         }
 
         self.true_scroll = 0.0
