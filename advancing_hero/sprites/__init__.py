@@ -19,3 +19,4 @@ from .regular_enemies.vertical_runner import VerticalRunner
 from .regular_enemies.horizontal_runner import HorizontalRunner
 from .regular_enemies.chaser import Chaser
 from .regular_enemies.chaser_explosive import ChaserExplosive
+from .collectable.potion_speed import PotionSpeed

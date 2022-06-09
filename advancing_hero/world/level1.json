@@ -10,6 +10,7 @@
     ["horizontal_runner", 474, 700],
     ["horizontal_runner", 474, 600],
     ["chaser_explosive", 474, 600],
+    ["potion_speed", 474, 600],
     ["monster_sprite", 651, 1566],
     ["ship_sprite", 87, 1290],
     ["ship_sprite", 909, 1283],

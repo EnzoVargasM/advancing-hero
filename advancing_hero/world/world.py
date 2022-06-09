@@ -47,7 +47,8 @@ class World:
             'vertical_runner': sprites.VerticalRunner,
             'horizontal_runner': sprites.HorizontalRunner,
             'chaser': sprites.Chaser,
-            'chaser_explosive': sprites.ChaserExplosive
+            'chaser_explosive': sprites.ChaserExplosive,
+            'potion_speed': sprites.PotionSpeed
         }
 
         self.true_scroll = 0.0

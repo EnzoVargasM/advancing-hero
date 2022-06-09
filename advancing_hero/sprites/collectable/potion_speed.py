@@ -3,7 +3,7 @@ from ..sprite import Sprite
 import pygame
 
 
-class PotionHeal(Sprite):
+class PotionSpeed(Sprite):
     """
     Represents a potion to heal the hero
     """
@@ -23,19 +23,31 @@ class PotionHeal(Sprite):
         self.heal = 35
         self.music_path = os.path.abspath('advancing_hero/songs/item.wav')
         self.screen = screen
+        self.caught = False
+        self.buff_duration = 0
 
     def update(self, player, stage):
         super().update()
+        if self.caught:
+            if self.buff_duration > 0:
+                self.buff_duration -= 1
+            else:
+                player.speed_base = player.hero_base_speed
+                self.kill()
+            return
         self.rect.y += stage.scroll_amount
         self.player_collision(player)
-        if self.rect.colliderect(self.screen.get_rect()) == 0:
+        if self.rect.colliderect(self.screen.get_rect()) == 0 and not self.caught:
             self.kill()
 
     def player_collision(self, player):
-        if self.rect.colliderect(player.rect):
+        if self.rect.colliderect(player.rect) and not self.caught:
             player.heal(self.heal)
             self.play_music()
-            self.kill()
+            self.image.set_alpha(0)
+            self.caught = True
+            self.buff_duration = 100
+            player.speed_base += 5
 
     def play_music(self):
         sound = pygame.mixer.Sound(self.music_path)
