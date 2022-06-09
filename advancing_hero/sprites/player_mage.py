@@ -117,7 +117,7 @@ class PlayerMage(Player):
                 sfx = os.path.abspath('advancing_hero/songs/blast.mp3')
                 sound = pygame.mixer.Sound(sfx)
                 sound.set_volume(0.5)
-                pygame.mixer.Channel(4).play(sound)
+                pygame.mixer.Channel(8).play(sound)
 
             elif self.current_weapon == 'mega_blast':
                 self.attack_cooldown_mega += self.time_charging * 4
@@ -129,7 +129,7 @@ class PlayerMage(Player):
                 sfx = os.path.abspath('advancing_hero/songs/mega_blast.mp3')
                 sound = pygame.mixer.Sound(sfx)
                 sound.set_volume(0.5)
-                pygame.mixer.Channel(4).play(sound)
+                pygame.mixer.Channel(8).play(sound)
 
             elif self.current_weapon == 'heal':
                 self.attack_cooldown_heal += self.time_charging * 5
@@ -144,7 +144,7 @@ class PlayerMage(Player):
                 sfx = os.path.abspath('advancing_hero/songs/heal.mp3')
                 sound = pygame.mixer.Sound(sfx)
                 sound.set_volume(1)
-                pygame.mixer.Channel(4).play(sound)
+                pygame.mixer.Channel(8).play(sound)
 
             self.time_charging = -15
         if key[pygame.K_v] and self.changing_weapon_cooldown == 0:

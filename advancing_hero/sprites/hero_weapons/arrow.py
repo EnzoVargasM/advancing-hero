@@ -36,6 +36,7 @@ class Arrow(Sprite):
         self.rect.centerx = temp_rect.centerx
         self.rect.centery = temp_rect.centery
         self.damage = 25
+        self.sfx = os.path.abspath('advancing_hero/songs/arrow.mp3')
 
     def update(self, stage):
         super().update()
@@ -60,11 +61,10 @@ class Arrow(Sprite):
                     self.damage)  # Interactable enemies must return true
                 # That is done so the projectiles don't interact with the player's attacks
                 if hit:
-                    # Play SFX
-                    sfx = os.path.abspath('advancing_hero/songs/arrow2.mp3')
-                    sound = pygame.mixer.Sound(sfx)
-                    sound.set_volume(1)
-                    pygame.mixer.Channel(6).play(sound)
-
+                    self.play_sfx()
                     self.kill()
 
+    def play_sfx(self):
+        sound = pygame.mixer.Sound(self.sfx)
+        sound.set_volume(1)
+        pygame.mixer.Channel(5).play(sound)

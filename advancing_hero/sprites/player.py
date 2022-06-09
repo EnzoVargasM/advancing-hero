@@ -69,6 +69,8 @@ class Player(Sprite):
         self.mask = pygame.mask.from_surface(self.image.convert_alpha())
         self.invicibility_frames = 0
         self.regular_font = pygame.freetype.Font(os.path.abspath('advancing_hero/fonts/zerovelo.ttf'), 12)
+        self.sfx_arrow = os.path.abspath('advancing_hero/songs/bow_arrow.mp3')
+        self.sfx_boomerang = os.path.abspath('advancing_hero/songs/boomerang1.mp3')
 
     def update(self):
         super().update()
@@ -137,8 +139,7 @@ class Player(Sprite):
                         self, self.settings)
                     self.projectiles.add(self.weapon)
                     # Play SFX
-                    sfx = os.path.abspath('advancing_hero/songs/boomerang1.mp3')
-                    sound = pygame.mixer.Sound(sfx)
+                    sound = pygame.mixer.Sound(self.sfx_boomerang)
                     sound.set_volume(0.5)
                     pygame.mixer.Channel(8).play(sound)
 
@@ -150,10 +151,9 @@ class Player(Sprite):
                     self.moving_direction, self.settings)
                 self.projectiles.add(self.weapon)
                 # Play SFX
-                sfx = os.path.abspath('advancing_hero/songs/bow_arrow.mp3')
-                sound = pygame.mixer.Sound(sfx)
-                sound.set_volume(0.5)
-                pygame.mixer.Channel(7).play(sound)
+                #sound = pygame.mixer.Sound(self.sfx_arrow)
+                #sound.set_volume(0.5)
+                #pygame.mixer.Channel(9).play(sound)
 
     def handle_movement(self):
         dx = 0

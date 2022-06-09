@@ -52,4 +52,4 @@ class PotionSpeed(Sprite):
     def play_music(self):
         sound = pygame.mixer.Sound(self.music_path)
         sound.set_volume(0.4)
-        pygame.mixer.Channel(4).play(sound)
+        pygame.mixer.Channel(7).play(sound)
