@@ -21,7 +21,7 @@ class WinStage(Sprite):
         self.position = position
         self.rect.x = position[0]
         self.rect.y = position[1]
-        self.music_path = os.path.abspath('advancing_hero/songs/item.wav')
+        self.music_path = os.path.abspath('advancing_hero/songs/win_stage.mp3')
         self.screen = screen
         with open('advancing_hero/world/journey_save_files.json') as save_files:
             self.json_data = json.load(save_files)
@@ -45,11 +45,6 @@ class WinStage(Sprite):
 
     def player_collision(self, player):
         if self.rect.colliderect(player.rect):
-            player.image = player.image_list[7]
-            if self.frame_counter % 30 == 0:
-                # self.play_music()
-                self.image_frame = (self.image_frame + 1) % len(self.image_list)
-                self.image = self.image_list[self.image_frame]
             if self.frame_counter % 60 == 0:
                 # Save in database this stage was cleared
                 aux = self.json_data
@@ -60,6 +55,16 @@ class WinStage(Sprite):
                             json.dump(aux, outfile)
                         outfile.close()
 
+                pygame.mixer.music.stop()
+                sound = pygame.mixer.Sound(self.music_path)
+                sound.set_volume(0.4)
+                pygame.mixer.Channel(6).play(sound)
+                pygame.time.wait(5000)
+                # Change Soundtrack
+                ost = os.path.abspath('advancing_hero/songs/title_screen_song.mp3')
+                pygame.mixer.music.load(ost)
+                pygame.mixer.music.set_volume(0.7)
+                pygame.mixer.music.play(-1)
                 pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
 
     def play_music(self):

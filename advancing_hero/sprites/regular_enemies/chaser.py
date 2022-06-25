@@ -22,7 +22,7 @@ class Chaser(RegularEnemy):
                          max_health=max_health)
         self.xpos = position[0]
         self.ypos = position[1]
-        self.speed = 2
+        self.speed = 2.5
 
     def update(self, player, stage):
         super().update()
@@ -32,7 +32,6 @@ class Chaser(RegularEnemy):
 
         if self.current_health <= 0 or self.rect.colliderect(
                 self.screen.get_rect()) == 0:
-            self.spawn_random_potion()
             self.kill()
 
         if self.frame_counter % self.animation_framerate == 0:
@@ -55,3 +54,6 @@ class Chaser(RegularEnemy):
         self.xpos += direction.x * self.speed
         self.ypos += direction.y * self.speed
 
+    def hurt(self, damage):
+        self.current_health =  0
+        return True

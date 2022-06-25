@@ -82,14 +82,14 @@ class JourneySelect(GameMode):
                             self.hero_list[j],
                             (43 + 220 + i * self.settings.screen_width / 3, file_y_start + 90 + 70 * j))
 
-                        if self.save_files_data[i][2][j] == 9:
+                        if self.save_files_data[i][2][j] == 10:
                             self.menu_font.render_to(self.screen, (
                             43 + i * self.settings.screen_width / 3, file_y_start + 110 + 70 * j),
                                                      "Complete",
                                                      self.settings.WHITE, size=13)
                         else:
                             self.menu_font.render_to(self.screen, (43 + i * self.settings.screen_width / 3, file_y_start+110+70*j),
-                                                     "In Progress: " + (self.save_files_data[i][2][j]).__str__() + " of 9",
+                                                     "In Progress: " + (self.save_files_data[i][2][j]-1).__str__() + " of 9",
                                                      self.settings.WHITE, size=13)
                     else:
                         self.menu_font.render_to(self.screen, (43 + i * self.settings.screen_width / 3, file_y_start+110 + 70 * j),
@@ -142,16 +142,28 @@ class JourneySelect(GameMode):
                             self.icon_position = 0
                     else:
                         if self.icon_position == 0:  # Start file
-                            with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
-                                aux = self.json_data
-                                aux["current_file"][0] = self.file_selected
-                                aux["current_hero"][0] = 0
-                                aux["current_level"][0] = 0
-                                json.dump(aux, outfile)
-                            outfile.close()
-                            pygame.time.wait(50)
-                            pygame.event.post(
-                                pygame.event.Event(pygame.USEREVENT, customType='character_select'))
+                            if self.json_data["saves"][self.file_selected][0] == 1:
+                                with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
+                                    aux = self.json_data
+                                    aux["current_file"][0] = self.file_selected
+                                    aux["current_hero"][0] = 0
+                                    aux["current_level"][0] = 0
+                                    json.dump(aux, outfile)
+                                outfile.close()
+                                pygame.time.wait(50)
+                                pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='character_select'))
+                            else:  # Start new File
+                                with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
+                                    aux = self.json_data
+                                    aux["saves"][self.file_selected] = [1, 0, [1, -1, -1]]
+                                    aux["current_file"][0] = self.file_selected
+                                    aux["current_hero"][0] = 0
+                                    aux["current_level"][0] = 0
+                                    json.dump(aux, outfile)
+                                outfile.close()
+                                pygame.time.wait(50)
+                                pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='character_select'))
+
                         elif self.icon_position == 1:  # Copy file
                             with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
                                 aux = self.json_data  # CHANGE JSON AUX for permanent changes

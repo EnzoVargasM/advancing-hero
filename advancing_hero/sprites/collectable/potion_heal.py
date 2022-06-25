@@ -11,7 +11,7 @@ class PotionHeal(Sprite):
         self,
         position,
         screen,
-        path: str = 'advancing_hero/images/sprites/potion_heal/',
+        path: str = 'advancing_hero/images/sprites/potions/potion_heal/',
     ) -> None:
         super().__init__(path=os.path.abspath(path), position=position)
 

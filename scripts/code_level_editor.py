@@ -12,15 +12,15 @@ fps = 30
 tile_size = 64
 screen_cols = 16
 screen_rows = 9
-cols = 25
-rows = 9
+cols = 16
+rows = 150
 screen_width = tile_size * screen_cols
 screen_height = (tile_size * screen_rows)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Level Editor')
 
-block_quantity = 7
+# block_quantity = 7
 block_type = 0
 
 #load images
@@ -31,7 +31,42 @@ brick_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/bric
 asphalt_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/asphalt.png'))
 lava_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/lava.png'))
 
-img_list = [grass_img, dirt_img, water_img, brick_img, asphalt_img, lava_img]
+CuWaterLeft_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/curwaterL.png'))
+CuWaterRight_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/curwaterR.png'))
+CuWaterUp_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/curwaterU.png'))
+CuWaterDown_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/curwaterD.png'))
+
+grass_2_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/grass8.png'))
+
+asph2_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/asphalt2.png'))
+asph3_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/asphalt3.png'))
+asph4_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/asphalt4.png'))
+asph5_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/asphalt5.png'))
+asph6_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/asphalt6.png'))
+
+brick2_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/brick2.png'))
+brick3_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/brick3.png'))
+brick4_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/brick4.png'))
+
+dirt2_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/dirt2.png'))
+dirt3_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/dirt3.png'))
+dirt4_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/dirt4.png'))
+
+grass2_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/grass2.png'))
+grass3_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/grass3.png'))
+grass4_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/grass4.png'))
+grass5_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/grass5.png'))
+
+water2_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/water2.png'))
+water3_img = pygame.image.load(path.abspath('../advancing_hero/images/blocks/water3.png'))
+
+img_list = [grass_img, dirt_img, water_img, brick_img, asphalt_img, lava_img, CuWaterLeft_img, CuWaterRight_img, CuWaterUp_img, CuWaterDown_img, grass_2_img,
+            asph2_img, asph3_img, asph4_img, asph5_img, asph6_img,
+            brick2_img, brick3_img, brick4_img,
+            dirt2_img, dirt3_img, dirt4_img,
+            grass2_img, grass3_img, grass4_img, grass5_img,
+            water2_img, water3_img]
+block_quantity = len(img_list)+1
 
 #define game variables
 clicked = False
@@ -86,7 +121,7 @@ def draw_world():
     for row in range(screen_rows):
         for col in range(screen_cols):
             if world_data[rows - 1 - row - up_ticks][col + right_tiks] > 0:
-                for i in range(1, 7):
+                for i in range(1, block_quantity):
                     if world_data[rows - 1 - row - up_ticks][col + right_tiks] == i:
                         img = pygame.transform.scale(img_list[i-1], (tile_size, tile_size))
                         screen.blit(img, (col * tile_size, (screen_rows - 1 - row) * tile_size))

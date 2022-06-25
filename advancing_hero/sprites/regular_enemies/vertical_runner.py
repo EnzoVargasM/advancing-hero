@@ -38,6 +38,8 @@ class VerticalRunner(RegularEnemy):
                 os.path.abspath('advancing_hero/images/sprites/status_bars/healthbar/healthbar_enemies.png')),
             (self.health_bar.initial_width, self.health_bar.height))
 
+        self.damage = 30
+
     def update(self, player, stage):
         super().update()
         if self.current_health <= 0 or self.rect.colliderect(

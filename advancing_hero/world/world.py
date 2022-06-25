@@ -34,7 +34,25 @@ class World:
             7: blocks.CurrentWaterLeft,
             8: blocks.CurrentWaterRight,
             9: blocks.CurrentWaterUp,
-            10: blocks.CurrentWaterDown
+            10: blocks.CurrentWaterDown,
+            11: blocks.Grass_2,
+            12: blocks.Asphalt2,
+            13: blocks.Asphalt3,
+            14: blocks.Asphalt4,
+            15: blocks.Asphalt5,
+            16: blocks.Asphalt6,
+            17: blocks.Brick2,
+            18: blocks.Brick3,
+            19: blocks.Brick4,
+            20: blocks.Dirt2,
+            21: blocks.Dirt3,
+            22: blocks.Dirt4,
+            23: blocks.Grass2,
+            24: blocks.Grass3,
+            25: blocks.Grass4,
+            26: blocks.Grass5,
+            27: blocks.Water2,
+            28: blocks.Water3,
         }
 
         self.sprites = {
@@ -48,7 +66,11 @@ class World:
             'horizontal_runner': sprites.HorizontalRunner,
             'chaser': sprites.Chaser,
             'chaser_explosive': sprites.ChaserExplosive,
-            'potion_speed': sprites.PotionSpeed
+            'potion_speed': sprites.PotionSpeed,
+            'potion_speed_down': sprites.PotionSpeedDown,
+            'potion_small': sprites.PotionSmall,
+            'potion_big': sprites.PotionBig,
+            'chaser_big_explosive': sprites.ChaserBigExplosive
         }
 
         self.true_scroll = 0.0

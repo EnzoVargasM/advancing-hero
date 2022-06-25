@@ -13,7 +13,7 @@ class CurrentWaterRight(Block):
     def __init__(
         self,
         settings: any,
-        path: str = 'advancing_hero/images/blocks/water3.png',
+        path: str = 'advancing_hero/images/blocks/curwaterR.png',
     ):
         super().__init__(os.path.abspath(path),
                          settings,
@@ -22,7 +22,7 @@ class CurrentWaterRight(Block):
 
     def player_interaction(self, player, *args, **kwargs):
         super().player_interaction(player)
-        player.in_water = True
+        player.in_water = False
         player.speed = player.speed_base
         dx = 1
         dy = 0
@@ -68,7 +68,7 @@ class CurrentWaterLeft(Block):
     def __init__(
         self,
         settings: any,
-        path: str = 'advancing_hero/images/blocks/water3.png',
+        path: str = 'advancing_hero/images/blocks/curwaterL.png',
     ):
         super().__init__(os.path.abspath(path),
                          settings,
@@ -77,7 +77,7 @@ class CurrentWaterLeft(Block):
 
     def player_interaction(self, player, *args, **kwargs):
         super().player_interaction(player)
-        player.in_water = True
+        player.in_water = False
         player.speed = player.speed_base
         dx = -1
         dy = 0
@@ -123,7 +123,7 @@ class CurrentWaterDown(Block):
     def __init__(
         self,
         settings: any,
-        path: str = 'advancing_hero/images/blocks/water3.png',
+        path: str = 'advancing_hero/images/blocks/curwaterD.png',
     ):
         super().__init__(os.path.abspath(path),
                          settings,
@@ -132,7 +132,7 @@ class CurrentWaterDown(Block):
 
     def player_interaction(self, player, *args, **kwargs):
         super().player_interaction(player)
-        player.in_water = True
+        player.in_water = False
         player.speed = player.speed_base
         dy = 1
         dx = 0
@@ -178,7 +178,7 @@ class CurrentWaterUp(Block):
     def __init__(
         self,
         settings: any,
-        path: str = 'advancing_hero/images/blocks/water3.png',
+        path: str = 'advancing_hero/images/blocks/curwaterU.png',
     ):
         super().__init__(os.path.abspath(path),
                          settings,
@@ -187,7 +187,7 @@ class CurrentWaterUp(Block):
 
     def player_interaction(self, player, *args, **kwargs):
         super().player_interaction(player)
-        player.in_water = True
+        player.in_water = False
         player.speed = player.speed_base
         dy = -1
         dx = 0

@@ -53,6 +53,11 @@ class TitleScreen(GameMode):
                         pygame.event.post(
                             pygame.event.Event(pygame.USEREVENT,
                                                customType='journey_select'))
+                        #pygame.event.post(
+                        #    pygame.event.Event(pygame.USEREVENT,
+                        #                       customType='init_level',
+                        #                       level=self.settings.levels[8],
+                        #                       scroll_mode=self.settings.levels_mode[8]))
                     elif self.icon_position == 1:
                         pygame.event.post(pygame.event.Event(pygame.QUIT))
 

@@ -45,7 +45,7 @@ class ChaserExplosive(RegularEnemy):
         if self.current_health <= 0 or self.rect.colliderect(
                 self.screen.get_rect()) == 0:
             self.spawn_random_potion()
-            self.kill()
+            self.collide_player = True
 
         if self.frame_counter % self.animation_framerate == 0:
             temp_rect = self.rect
@@ -70,6 +70,10 @@ class ChaserExplosive(RegularEnemy):
             self.play_music()
             self.image = self.image_list[-5]
             player.hurt(30)
+
+    def hurt(self, damage):
+        self.current_health = 0
+        return True
 
     def play_music(self):
         sound = pygame.mixer.Sound(self.music_path)

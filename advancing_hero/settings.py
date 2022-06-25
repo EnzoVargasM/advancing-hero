@@ -28,9 +28,9 @@ levels = ['advancing_hero/world/level1.json',  # 1
           'advancing_hero/world/level4.json',
           'advancing_hero/world/level5.json',  # 5
           'advancing_hero/world/level6.json',
-          'advancing_hero/world/level5.json',  # 7
-          'advancing_hero/world/level5.json',
-          'advancing_hero/world/level5.json'  # 9
+          'advancing_hero/world/level7.json',  # 7
+          'advancing_hero/world/level8.json',
+          'advancing_hero/world/level9.json'  # 9
           ]
 
 levels_mode = ['Down',  # 1

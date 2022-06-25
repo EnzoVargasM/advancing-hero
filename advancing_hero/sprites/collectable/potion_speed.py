@@ -11,7 +11,7 @@ class PotionSpeed(Sprite):
         self,
         position,
         screen,
-        path: str = 'advancing_hero/images/sprites/potion_speed/',
+        path: str = 'advancing_hero/images/sprites/potions/potion_speed/',
     ) -> None:
         super().__init__(path=os.path.abspath(path), position=position)
 
@@ -20,7 +20,6 @@ class PotionSpeed(Sprite):
         self.position = position
         self.rect.x = position[0]
         self.rect.y = position[1]
-        self.heal = 35
         self.music_path = os.path.abspath('advancing_hero/songs/item.wav')
         self.screen = screen
         self.caught = False
@@ -42,7 +41,6 @@ class PotionSpeed(Sprite):
 
     def player_collision(self, player):
         if self.rect.colliderect(player.rect) and not self.caught:
-            player.heal(self.heal)
             self.play_music()
             self.image.set_alpha(0)
             self.caught = True

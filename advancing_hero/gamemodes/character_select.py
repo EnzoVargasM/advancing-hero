@@ -70,20 +70,27 @@ class CharacterSelectScreen(GameMode):
                                  self.settings.BLACK)
 
         for i in range(len(self.hero_list[1])):
-            self.screen.blit(
-                self.hero_list[1][i],
-                (self.settings.screen_width / 2 - 150, self.settings.screen_height / 2 - 170 + i * 80))
-            self.menu_font.render_to(self.screen,
-                                     (self.settings.screen_width / 2 - 350,
-                                      self.settings.screen_height / 2 - 150 + i * 80),
-                                     self.hero_list[0][i], self.settings.BLACK)
+            if self.json_data["saves"][self.json_data["current_file"][0]][2][i] > -1:
+                self.screen.blit(
+                    self.hero_list[1][i],
+                    (self.settings.screen_width / 2 - 150, self.settings.screen_height / 2 - 170 + i * 80))
+
+                self.menu_font.render_to(self.screen,
+                                         (self.settings.screen_width / 2 - 350,
+                                          self.settings.screen_height / 2 - 150 + i * 80),
+                                         self.hero_list[0][i], self.settings.BLACK)
+            else:
+                self.menu_font.render_to(self.screen,
+                                         (self.settings.screen_width / 2 - 350,
+                                          self.settings.screen_height / 2 - 150 + i * 80),
+                                         "Locked", self.settings.BLACK)
 
         self.screen.blit(
             self.selection_icon,
             (self.settings.screen_width / 2 - 400,
              self.settings.screen_height / 2 - 150 + self.icon_position * 80))
 
-        # Handle character movement in World Map
+        # Handle character movement
         self.tick = self.tick + 1
         if self.tick > 20:
             self.tick = 0  # reset timer
@@ -97,29 +104,32 @@ class CharacterSelectScreen(GameMode):
             elif self.icon_frame == 32:
                 self.icon_frame = 21
         if self.icon_position == 0:
-            self.selection_icon2 = pygame.transform.scale(
-                pygame.image.load(
-                    os.path.abspath(f'advancing_hero/images/sprites/player/frame{int(self.icon_frame / 10)}.png')),
-                (100, 140))
-            self.screen.blit(
-                self.selection_icon2,
-                (600, 330))
+            if self.json_data["saves"][self.json_data["current_file"][0]][2][self.icon_position] > -1:
+                self.selection_icon2 = pygame.transform.scale(
+                    pygame.image.load(
+                        os.path.abspath(f'advancing_hero/images/sprites/player/frame{int(self.icon_frame / 10)}.png')),
+                    (100, 140))
+                self.screen.blit(
+                    self.selection_icon2,
+                    (600, 330))
         elif self.icon_position == 1:
-            self.selection_icon2 = pygame.transform.scale(
-                pygame.image.load(
-                    os.path.abspath(f'advancing_hero/images/sprites/player_mage/frame{int(self.icon_frame / 10)}.png')),
-                (100, 140))
-            self.screen.blit(
-                self.selection_icon2,
-                (600, 330))
+            if self.json_data["saves"][self.json_data["current_file"][0]][2][self.icon_position] > -1:
+                self.selection_icon2 = pygame.transform.scale(
+                    pygame.image.load(
+                        os.path.abspath(f'advancing_hero/images/sprites/player_mage/frame{int(self.icon_frame / 10)}.png')),
+                    (100, 140))
+                self.screen.blit(
+                    self.selection_icon2,
+                    (600, 330))
         elif self.icon_position == 2:
-            self.selection_icon2 = pygame.transform.scale(
-                pygame.image.load(
-                    os.path.abspath(f'advancing_hero/images/sprites/player_monk/frame{int(self.icon_frame / 10)}.png')),
-                (100, 140))
-            self.screen.blit(
-                self.selection_icon2,
-                (600, 330))
+            if self.json_data["saves"][self.json_data["current_file"][0]][2][self.icon_position] > -1:
+                self.selection_icon2 = pygame.transform.scale(
+                    pygame.image.load(
+                        os.path.abspath(f'advancing_hero/images/sprites/player_monk/frame{int(self.icon_frame / 10)}.png')),
+                    (100, 140))
+                self.screen.blit(
+                    self.selection_icon2,
+                    (600, 330))
 
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -131,16 +141,15 @@ class CharacterSelectScreen(GameMode):
                         self.icon_position = self.icon_position + 1
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                     if 0 <= self.icon_position <= 2:
-                        # Update current hero in global database
-                        with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
-                            aux = self.json_data
-                            aux["current_hero"][0] = self.icon_position
-                            json.dump(aux, outfile)
-                        outfile.close()
-                        pygame.time.wait(150)
-                        pygame.event.post(
-                            pygame.event.Event(pygame.USEREVENT,
-                                               customType='world_map'))
+                        if self.json_data["saves"][self.json_data["current_file"][0]][2][self.icon_position] > -1:
+                            # Update current hero in global database
+                            with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
+                                aux = self.json_data
+                                aux["current_hero"][0] = self.icon_position
+                                json.dump(aux, outfile)
+                            outfile.close()
+                            pygame.time.wait(150)
+                            pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
                 if event.key == pygame.K_ESCAPE:
                     pygame.time.wait(150)
                     pygame.event.post(

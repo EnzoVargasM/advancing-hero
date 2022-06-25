@@ -40,6 +40,7 @@ class Player(Sprite):
         self.settings = settings
         self.stage = stage
         self.image_frame = 1
+        self.size_effect = 'normal'
         self.update_rect()
         self.walking_framerate = 0
         self.moving_direction = 3
@@ -254,6 +255,18 @@ class Player(Sprite):
                                                self.rect.y - scroll,
                                                self.rect.width,
                                                self.rect.height):
+                            # Death
+                            pygame.mixer.music.stop()
+                            music_path = 'advancing_hero/songs/you_died.mp3'
+                            sound = pygame.mixer.Sound(music_path)
+                            sound.set_volume(0.4)
+                            pygame.mixer.Channel(6).play(sound)
+                            pygame.time.wait(2000)
+                            ost = os.path.abspath('advancing_hero/songs/title_screen_song.mp3')
+                            pygame.mixer.music.load(ost)
+                            pygame.mixer.music.set_volume(0.7)
+                            pygame.mixer.music.play(-1)
+
                             pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
 
     def auto_scroll_left(self, scroll):
@@ -348,7 +361,12 @@ class Player(Sprite):
     def update_rect(self, flip=False):
         temp_rect = self.rect
         self.image = self.image_list[self.image_frame]
-        self.image = pygame.transform.scale2x(self.image)
+
+        self.image = pygame.transform.scale(self.image, (34, 52))
+        if self.size_effect == 'big':
+            self.image = pygame.transform.scale2x(self.image)
+        elif self.size_effect == 'small':
+            self.image = pygame.transform.scale(self.image, (17, 26))
         if flip:
             self.image = pygame.transform.flip(self.image, True, False)
         self.rect = self.image.get_rect()
@@ -363,10 +381,6 @@ class Player(Sprite):
 
     def heal(self, heal):
         self.current_health = min(self.current_health + heal, self.max_health)
-        # Testing speed up effect (TSUE)
-        #self.timer_fast_player = 600
-        #self.speed_base = self.speed_base * 5
-        #self.speed = self.speed_base
         return True
 
     def check_oxygen(self):
@@ -376,6 +390,17 @@ class Player(Sprite):
     def check_alive(self):
         if self.current_health == 0:
             self.alive = False
+
+            pygame.mixer.music.stop()
+            music_path = 'advancing_hero/songs/you_died.mp3'
+            sound = pygame.mixer.Sound(music_path)
+            sound.set_volume(0.4)
+            pygame.mixer.Channel(6).play(sound)
+            pygame.time.wait(1000)
+            ost = os.path.abspath('advancing_hero/songs/title_screen_song.mp3')
+            pygame.mixer.music.load(ost)
+            pygame.mixer.music.set_volume(0.7)
+            pygame.mixer.music.play(-1)
             pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
 
     def push(self):

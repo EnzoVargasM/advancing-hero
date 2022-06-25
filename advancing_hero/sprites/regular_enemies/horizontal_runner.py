@@ -31,6 +31,7 @@ class HorizontalRunner(RegularEnemy):
                          max_health=max_health)
 
         self.image = self.image_list[1-self.side]
+        self.damage = 15
 
     def update(self, player, stage):
         super().update()

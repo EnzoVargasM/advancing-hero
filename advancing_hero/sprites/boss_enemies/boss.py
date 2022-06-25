@@ -269,7 +269,28 @@ class Boss(Sprite):
                         with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
                             json.dump(aux, outfile)
                         outfile.close()
-
+                if aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]] == 9:  # is last stage
+                    if aux["current_hero"][0] == 0:  # Archer
+                        if aux["saves"][aux["current_file"][0]][2][1] == -1:
+                            aux["saves"][aux["current_file"][0]][2][1] = 1
+                    if aux["current_hero"][0] == 1:  # Mage
+                        if aux["saves"][aux["current_file"][0]][2][2] == -1:
+                            aux["saves"][aux["current_file"][0]][2][2] = 1
+                    aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]] = 10
+                    with open('advancing_hero/world/journey_save_files.json', 'w') as outfile:
+                        json.dump(aux, outfile)
+                    outfile.close()
+                pygame.mixer.music.stop()
+                music_path = os.path.abspath('advancing_hero/songs/win_stage.mp3')
+                sound = pygame.mixer.Sound(music_path)
+                sound.set_volume(0.4)
+                pygame.mixer.Channel(6).play(sound)
+                pygame.time.wait(5000)
+                # Change Soundtrack
+                ost = os.path.abspath('advancing_hero/songs/title_screen_song.mp3')
+                pygame.mixer.music.load(ost)
+                pygame.mixer.music.set_volume(0.7)
+                pygame.mixer.music.play(-1)
                 pygame.event.post(pygame.event.Event(pygame.USEREVENT, customType='world_map'))
 
     def shake_stage(self, stage):
