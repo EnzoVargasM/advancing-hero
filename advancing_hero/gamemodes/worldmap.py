@@ -80,7 +80,7 @@ class WorldMap(GameMode):
         aux = self.json_data
         stages_cleared_number = aux["saves"][aux["current_file"][0]][2][aux["current_hero"][0]]
         for i in range(len(self.stage_positions)):
-            if i < stages_cleared_number:
+            if i < stages_cleared_number-1:
                 self.menu_font.render_to(self.screen,
                                          self.stage_positions[i],
                                          str(i+1), self.stage_clear_color, style=3)
@@ -118,7 +118,7 @@ class WorldMap(GameMode):
                     if self.icon_position > 0:
                         self.icon_position = self.icon_position - 1
                 if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    if self.icon_position < stages_cleared_number - 1:
+                    if self.icon_position < stages_cleared_number - 2:
                         self.icon_position = self.icon_position + 1
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                     if 0 <= self.icon_position <= 8:
